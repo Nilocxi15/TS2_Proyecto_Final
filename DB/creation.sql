@@ -1,6 +1,8 @@
-BEGIN;
+CREATE DATABASE "IngeniaMath";
 
-CREATE SCHEMA IF NOT EXISTS "IngeniaMath";
+\c "IngeniaMath";
+
+BEGIN;
 
 -- Usuarios y Roles
 CREATE TABLE
