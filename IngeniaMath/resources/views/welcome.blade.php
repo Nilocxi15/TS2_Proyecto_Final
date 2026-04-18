@@ -42,7 +42,7 @@
 
                     <div class="form-row">
                         <a href="{{ route('register') }}" class="aux-link">No tengo cuenta</a>
-                        <a href="#" class="aux-link">Olvide mi contrasena</a>
+                        <a href="#" class="aux-link">Olvidé mi contrasena</a>
                     </div>
 
                     <button type="submit" class="btn-primary">Entrar</button>
