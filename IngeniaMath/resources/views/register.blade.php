@@ -35,7 +35,7 @@
                     <h2>Registro</h2>
 
                     <div class="field-group">
-                        <label for="name">Name</label>
+                        <label for="name">Nombre</label>
                         <input
                             id="name"
                             name="name"
@@ -43,14 +43,29 @@
                             value="{{ old('name') }}"
                             autocomplete="name"
                             required
-                            placeholder="Tu nombre completo">
+                            placeholder="Tu nombre">
                         @error('name')
                             <p class="error">{{ $message }}</p>
                         @enderror
                     </div>
 
                     <div class="field-group">
-                        <label for="email">Email</label>
+                        <label for="lastname">Apellidos</label>
+                        <input
+                            id="lastname"
+                            name="lastname"
+                            type="text"
+                            value="{{ old('lastname') }}"
+                            autocomplete="family-name"
+                            required
+                            placeholder="Tus apellidos">
+                        @error('lastname')
+                            <p class="error">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="field-group">
+                        <label for="email">Correo electrónico</label>
                         <input
                             id="email"
                             name="email"
@@ -65,28 +80,28 @@
                     </div>
 
                     <div class="field-group">
-                        <label for="password">Password</label>
+                        <label for="password">Contraseña</label>
                         <input
                             id="password"
                             name="password"
                             type="password"
                             autocomplete="new-password"
                             required
-                            placeholder="Minimo 8 caracteres">
+                            placeholder="Mínimo 8 caracteres">
                         @error('password')
                             <p class="error">{{ $message }}</p>
                         @enderror
                     </div>
 
                     <div class="field-group">
-                        <label for="password_confirmation">Confirm password</label>
+                        <label for="password_confirmation">Confirmar contraseña</label>
                         <input
                             id="password_confirmation"
                             name="password_confirmation"
                             type="password"
                             autocomplete="new-password"
                             required
-                            placeholder="Confirma tu contrasena">
+                            placeholder="Confirma tu contraseña">
                         @error('password_confirmation')
                             <p class="error">{{ $message }}</p>
                         @enderror
