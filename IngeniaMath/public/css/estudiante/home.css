@@ -1,0 +1,17 @@
+.navbar-estudiante {
+	background-color: #1E3A8A;
+}
+
+.navbar-estudiante .navbar-brand,
+.navbar-estudiante .nav-link,
+.navbar-estudiante .navbar-toggler {
+	color: #ffffff;
+}
+
+.navbar-estudiante .navbar-toggler {
+	border-color: rgba(255, 255, 255, 0.35);
+}
+
+.navbar-estudiante .navbar-toggler-icon {
+	filter: invert(1);
+}

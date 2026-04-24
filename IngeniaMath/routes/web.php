@@ -22,7 +22,6 @@ Route::get('/register', function () {
 
 
 
-
 /*
 |--------------------------------------------------------------------------
 | Banco de Ejercicios - Módulo 2
@@ -42,6 +41,13 @@ Route::prefix('ejercicios')->name('ejercicios.')->group(function () {
     Route::delete('/{id}', [EjercicioController::class, 'destroy'])->name('destroy');
 });
 
+
+
+
 // Rutas AJAX para selects dinámicos (sin API)
 Route::get('/subtemas/{moduloId}', [EjercicioController::class, 'getSubtemas']);
 Route::get('/ejercicios-publicados', [EjercicioController::class, 'getEjerciciosPublicados']);
+// Rutas para la página de inicio del estudiante
+Route::get('/student/home', function() {
+    return view('estudiante.home');
+})->name('home-estudiante');
