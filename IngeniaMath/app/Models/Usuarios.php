@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Usuarios extends Model
+class Usuarios extends Authenticatable
 {
     use HasFactory;
 
@@ -39,6 +39,16 @@ class Usuarios extends Model
     public function roles(): BelongsToMany
     {
         return $this->belongsToMany(Roles::class, 'usuario_roles', 'usuario_id', 'rol_id');
+    }
+
+    public function getAuthPassword()
+    {
+        return $this->password_hash;
+    }
+
+    public function tieneRol(int $rolId): bool
+    {
+        return $this->roles->contains('id', $rolId);
     }
 
     public function ejerciciosCreados(): HasMany
