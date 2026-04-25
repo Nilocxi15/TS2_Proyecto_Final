@@ -35,7 +35,7 @@ class AuthController extends Controller
                 return redirect('/revisor/dashboard');
             }
 
-            return redirect('/student/dashboard');
+            return redirect('/estudiante/dashboard');
         }
 
         return back()->with('error', 'Credenciales inválidas');
