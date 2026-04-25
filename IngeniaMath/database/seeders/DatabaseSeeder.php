@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Schema;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,19 +15,26 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call([
-            RolesSeeder::class,
-            ModulosSeeder::class,
+        $seedersByTable = [
+            'roles' => RolesSeeder::class,
+            'modulos' => ModulosSeeder::class,
+            'usuarios' => UsuarioSeeder::class,
+            'usuario_roles' => UsuarioRolesSeeder::class,
+            'subtemas' => SubtemasSeeder::class,
+            'ejercicios' => EjerciciosSeeder::class,
+            'ejercicios_relacionados' => EjerciciosRelacionadosSeeder::class,
+            'simulacros' => SimulacrosSeeder::class,
+            'simulacro_preguntas' => SimulacroPreguntasSeeder::class,
+            'rutas_aprendizaje' => RutasAprendizajeSeeder::class,
+            'ruta_detalle' => RutaDetalleSeeder::class,
+            'flashcards' => FlashcardsSeeder::class,
+            'recursos' => RecursosSeeder::class,
+        ];
 
-            UsuarioSeeder::class,
-            UsuarioRolesSeeder::class,
-            SubtemasSeeder::class,
-            EjerciciosSeeder::class,
-            SimulacrosSeeder::class,
-            SimulacroPreguntasSeeder::class,
-            RutasAprendizajeSeeder::class,
-            RutaDetalleSeeder::class,
-            FlashcardsSeeder::class,
-        ]);
+        foreach ($seedersByTable as $table => $seederClass) {
+            if (Schema::hasTable($table)) {
+                $this->call($seederClass);
+            }
+        }
     }
 }

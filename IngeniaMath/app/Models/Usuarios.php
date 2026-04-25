@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Usuarios extends Model
+class Usuarios extends Authenticatable
 {
     use HasFactory;
 
@@ -35,6 +35,11 @@ class Usuarios extends Model
         'activo' => 'boolean',
         'created_at' => 'datetime',
     ];
+
+    public function getAuthPassword(): string
+    {
+        return $this->password_hash;
+    }
 
     public function roles(): BelongsToMany
     {

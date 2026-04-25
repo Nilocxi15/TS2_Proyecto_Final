@@ -47,9 +47,9 @@ class UsuariosController extends Controller
             'email.required' => 'El correo es obligatorio.',
             'email.email' => 'Ingresa un correo valido.',
             'email.unique' => 'Ese correo ya esta registrado.',
-            'password.required' => 'La contrasena es obligatoria.',
-            'password.min' => 'La contrasena debe tener al menos 8 caracteres.',
-            'password.confirmed' => 'La confirmacion de contrasena no coincide.',
+            'password.required' => 'La contraseña es obligatoria.',
+            'password.min' => 'La contraseña debe tener al menos 8 caracteres.',
+            'password.confirmed' => 'La confirmacion de contraseña no coincide.',
         ]);
 
         try {

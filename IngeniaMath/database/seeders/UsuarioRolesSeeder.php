@@ -25,7 +25,7 @@ class UsuarioRolesSeeder extends Seeder
             $usuariosForRole = $usuarios->slice($index * 3, 3);
 
             foreach ($usuariosForRole as $usuario) {
-                UsuarioRoles::create([
+                UsuarioRoles::firstOrCreate([
                     'usuario_id' => $usuario->id,
                     'rol_id' => $role->id,
                 ]);

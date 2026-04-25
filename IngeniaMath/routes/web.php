@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\RecursosController;
 use App\Http\Controllers\UsuariosController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,6 +17,9 @@ Route::get('/register', function () {
 })->name('register');
 
 Route::post('/register', [UsuariosController::class, 'store'])->name('register.store');
+
+Route::post('/login', [LoginController::class, 'store'])->name('login.store');
+Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
 
 /* ==========================================================
     Rutas para el rol estudiante
@@ -41,9 +46,7 @@ Route::get('/student/practice', function() {
 })->name('practice-estudiante');
 
 // Rutas para la página de recursos educativos
-Route::get('/student/resources', function() {
-    return view('estudiante.recursos');
-})->name('resources-estudiante');
+Route::get('/student/resources', [RecursosController::class, 'index'])->name('resources-estudiante');
 
 // Rutas para la página de ruta de aprendizaje
 Route::get('/student/learning-route', function() {

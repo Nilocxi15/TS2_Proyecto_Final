@@ -27,7 +27,7 @@ class UsuarioServices
 			$rolEstudiante = Roles::find(1);
 
 			if (! $rolEstudiante) {
-				throw new RuntimeException('No existe el rol Estudiante con id 1.');
+				throw new RuntimeException('No existe el rol Estudiante en la base de datos.');
 			}
 
 			UsuarioRoles::create([

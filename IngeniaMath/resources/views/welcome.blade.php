@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Login | IngeniaMath</title>
+    <title>IngeniaMath - Login</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -29,16 +29,28 @@
                     <p>Accede con tu correo institucional o cuenta registrada.</p>
                 </div>
 
-                <form class="login-form" method="POST" action="{{ url('/login') }}" novalidate>
+                @if (session('status'))
+                    <div class="feedback success" role="status">
+                        {{ session('status') }}
+                    </div>
+                @endif
+
+                <form class="login-form" method="POST" action="{{ route('login.store') }}" novalidate>
                     @csrf
 
                     <label for="email" class="field-label">Correo electronico</label>
                     <input id="email" name="email" type="email" class="field-input" placeholder="nombre@correo.com"
-                        required>
+                        value="{{ old('email') }}" required>
+                    @error('email')
+                        <p class="feedback error" role="alert">{{ $message }}</p>
+                    @enderror
 
                     <label for="password" class="field-label">Contrasena</label>
                     <input id="password" name="password" type="password" class="field-input"
                         placeholder="Ingresa tu contrasena" required>
+                    @error('password')
+                        <p class="feedback error" role="alert">{{ $message }}</p>
+                    @enderror
 
                     <div class="form-row">
                         <a href="{{ route('register') }}" class="aux-link">No tengo cuenta</a>
@@ -47,10 +59,6 @@
 
                     <button type="submit" class="btn-primary">Entrar</button>
                 </form>
-
-                <div class="feedback error" role="alert">
-                    Si tu acceso falla, valida correo y contrasena.
-                </div>
             </div>
         </section>
     </main>
