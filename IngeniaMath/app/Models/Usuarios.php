@@ -46,6 +46,16 @@ class Usuarios extends Authenticatable
         return $this->belongsToMany(Roles::class, 'usuario_roles', 'usuario_id', 'rol_id');
     }
 
+    public function getAuthPassword()
+    {
+        return $this->password_hash;
+    }
+
+    public function tieneRol(int $rolId): bool
+    {
+        return $this->roles->contains('id', $rolId);
+    }
+
     public function ejerciciosCreados(): HasMany
     {
         return $this->hasMany(Ejercicios::class, 'creado_por');
