@@ -34,6 +34,10 @@
 
                     <h2>Registro</h2>
 
+                    @error('register')
+                        <p class="error">{{ $message }}</p>
+                    @enderror
+
                     <div class="field-group">
                         <label for="name">Nombre</label>
                         <input
