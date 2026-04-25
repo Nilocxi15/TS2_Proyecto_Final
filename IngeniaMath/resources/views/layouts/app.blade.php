@@ -5,14 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>IngeniaMath - @yield('title', 'Banco de Ejercicios')</title>
-    
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- MathJax para fórmulas matemáticas -->
     <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" id="MathJax-script" async></script>
-    
+
     <style>
         * {
             margin: 0;
@@ -41,25 +43,25 @@ body {
         }
 
         .page {
-            min-height: calc(100vh - 56px); 
-            display: grid; 
-            grid-template-columns: 1fr; 
+            min-height: calc(100vh - 56px);
+            display: grid;
+            grid-template-columns: 1fr;
             align-items: start;
             gap: 26px;
             max-width: 1400px;
-            margin: 0 auto; 
+            margin: 0 auto;
             padding: 2rem;
         }
 
         /* Para vistas que necesitan dos columnas (como formularios grandes) */
         .page-two-columns {
-            min-height: calc(100vh - 56px); 
-            display: grid; 
-            grid-template-columns: 1.02fr 1fr; 
+            min-height: calc(100vh - 56px);
+            display: grid;
+            grid-template-columns: 1.02fr 1fr;
             align-items: start;
             gap: 26px;
             max-width: 1400px;
-            margin: 0 auto; 
+            margin: 0 auto;
             padding: 2rem;
         }
 
@@ -141,52 +143,58 @@ body {
             background: rgba(0,0,0,0.1);
             margin-top: 40px;
         }
+
+        .sidebar .nav-link {
+            color: #4a5568;
+            text-decoration: none;
+            border-radius: 10px;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 500;
+        }
+
+        .sidebar .nav-link:hover {
+            background: #f1f5f9;
+            color: #667eea;
+        }
+
+        .sidebar .nav-link i {
+            font-size: 1.1rem;
+        }
+
     </style>
-    
+
     @stack('styles')
 </head>
 <body>
 
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg sticky-top">
-        <div class="container">
-            <a class="navbar-brand" href="{{ route('ejercicios.index') }}">
-                <i class="fas fa-brain me-2"></i>IngeniaMath
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('ejercicios.index') }}">
-                            <i class="fas fa-database me-1"></i> Ejercicios
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('ejercicios.create') }}">
-                            <i class="fas fa-plus-circle me-1"></i> Nuevo Ejercicio
-                        </a>
-                    </li>
-                    <!-- Temporal: sin autenticación -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                            <i class="fas fa-user-circle me-1"></i> Tutor Demo
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Mi Perfil</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Cerrar Sesión</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    @include('partials.navbar')
 
     <!-- Contenido principal -->
     <main>
-        @yield('content')
+        <!-- Sidebar -->
+        @auth
+            <div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarOffcanvas">
+
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title">Menú</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+                </div>
+
+                <div class="offcanvas-body">
+                    @include('partials.sidebar')
+                </div>
+
+            </div>
+        @endauth
+
+        {{-- Contenido --}}
+        <div class="app-content">
+            @yield('content')
+        </div>
     </main>
 
     <footer>
@@ -195,7 +203,7 @@ body {
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
+
     <script>
         // Función para previsualizar MathJax
         function previewMath() {
@@ -203,7 +211,7 @@ body {
                 MathJax.typesetPromise();
             }
         }
-        
+
         // Escuchar cambios en los campos con contenido matemático
         document.addEventListener('DOMContentLoaded', function() {
             const mathFields = document.querySelectorAll('.math-field');
@@ -216,7 +224,7 @@ body {
             });
         });
     </script>
-    
+
     @stack('scripts')
 </body>
 </html>

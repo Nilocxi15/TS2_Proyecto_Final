@@ -33,7 +33,7 @@ Route::get('/register', function () {
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth', 'role:' . RolEnum::ESTUDIANTE->value])->group(function () {
-    Route::get('/student/dashboard', function () {
+    Route::get('/estudiante/dashboard', function () {
         return view('dashboards.estudiante');
     })->name('dashboard.estudiante');
 });
