@@ -12,14 +12,14 @@ use App\Enums\RolEnum;
 | Rutas públicas
 |--------------------------------------------------------------------------
 */
-Route::post('/register', [UsuariosController::class, 'store'])->name('register');
 
-Route::get('/', fn() => view('welcome'));
-Route::post('/login', [LoginController::class, 'store'])->name('login.store');
 Route::middleware('guest')->group(function () {
-
-
+    Route::get('/', fn() => view('welcome'));
+    Route::post('/login', [LoginController::class, 'store'])->name('login.store');
+    Route::get('/register', fn() => view('register'))->name('register');
+    Route::post('/register', [UsuariosController::class, 'store'])->name('register.store');
 });
+
 
 /*
 |--------------------------------------------------------------------------

@@ -29,7 +29,7 @@
             </section>
 
             <section class="form-column" aria-label="Formulario de registro">
-                <form class="register-form" method="POST" action="{{ url('/register') }}">
+                <form class="register-form" method="POST" action="{{ route('register.store') }}">
                     @csrf
 
                     <h2>Registro</h2>
