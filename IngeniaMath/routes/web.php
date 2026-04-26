@@ -56,8 +56,6 @@ Route::middleware('auth')->group(function () {
             // Rutas para la página de perfil del estudiante
             Route::get('/profile', fn() => view('estudiante.perfil'))->name('profile');
 
-            Route::get('/subtemas/{moduloId}', [EjercicioController::class, 'getSubtemas']);
-            Route::get('/ejercicios-publicados', [EjercicioController::class, 'getEjerciciosPublicados']);
         });
 
 

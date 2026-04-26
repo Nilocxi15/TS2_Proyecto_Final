@@ -54,6 +54,12 @@
         @if(auth()->user()->tieneRol(RolEnum::TUTOR->value))
 
             <li class="nav-item">
+                <a class="nav-link" href="{{ route('tutor.dashboard') }}">
+                    <i class="fas fa-chart-pie"></i> Dashboard
+                </a>
+            </li>
+
+            <li class="nav-item">
                 <a class="nav-link" href="{{ route('tutor.ejercicios.index') }}">
                     <i class="fas fa-database me-1"></i> Ejercicios
                 </a>
