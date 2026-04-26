@@ -38,7 +38,7 @@
                     <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-4">
 
                         <li>
-                            <a class="dropdown-item py-2" href="#">
+                            <a class="dropdown-item py-2" href="{{ route('profile') }}">
                                 <i class="fas fa-user me-2"></i> Mi Perfil
                             </a>
                         </li>

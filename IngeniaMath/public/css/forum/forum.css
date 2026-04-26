@@ -1,0 +1,204 @@
+/* ===============================
+   FORUM PAGE
+=================================*/
+
+.forum-page {
+    min-height: calc(85vh - 56px);
+    padding: 1.5rem;
+    background: #f5f7fb;
+}
+
+.forum-container {
+    max-width: 1270px;
+    margin: 0 auto;
+}
+
+/* ===============================
+   GENERAL CARD STYLE
+=================================*/
+
+.forum-card {
+    background: #ffffff;
+    border: 1px solid #e8edf3;
+    border-radius: 18px;
+    padding: 1.25rem;
+    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.05);
+    transition: all 0.2s ease;
+}
+
+.forum-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+}
+
+/* ===============================
+   POST STYLE
+=================================*/
+
+.post-card {
+    margin-bottom: 1rem;
+}
+
+.post-content {
+    font-size: 0.97rem;
+    color: #334155;
+    line-height: 1.55;
+    margin-bottom: 1rem;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 4; /* max lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* ===============================
+   PROFILE IMAGE
+=================================*/
+
+.avatar {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #e2e8f0;
+    background: #fff;
+}
+
+/* ===============================
+   BUTTONS
+=================================*/
+
+.forum-btn {
+    background: #2563eb;
+    color: #fff;
+    border: none;
+    padding: 0.6rem 1.3rem;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: 0.2s ease;
+}
+
+.forum-btn:hover {
+    background: #1d4ed8;
+    color: #fff;
+}
+
+.btn-outline-primary {
+    border-radius: 10px;
+    font-weight: 500;
+    padding: 0.45rem 0.9rem;
+}
+
+/* ===============================
+   FORM CONTROLS
+=================================*/
+
+.form-select,
+.form-control {
+    border-radius: 12px;
+    border: 1px solid #dbe3ec;
+    padding: 0.75rem 0.95rem;
+}
+
+.form-select:focus,
+.form-control:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 0.15rem rgba(37, 99, 235, 0.15);
+}
+
+/* ===============================
+   BADGES
+=================================*/
+
+.badge {
+    padding: 0.45rem 0.7rem;
+    font-size: 0.75rem;
+    border-radius: 999px;
+    font-weight: 600;
+}
+
+/* ===============================
+   HEADER / TOOLBAR
+=================================*/
+
+.forum-header {
+    gap: 1rem;
+}
+
+/* ===============================
+   PAGINATION
+=================================*/
+
+.pagination {
+    justify-content: center;
+}
+
+/* ===============================
+   MOBILE
+=================================*/
+
+@media (max-width: 768px) {
+
+    .forum-page {
+        padding: 1rem;
+    }
+
+    .forum-card {
+        padding: 1rem;
+        border-radius: 14px;
+    }
+
+    .forum-header {
+        flex-direction: column;
+        align-items: stretch !important;
+    }
+
+    .forum-header a {
+        width: 100%;
+    }
+
+    .avatar {
+        width: 42px;
+        height: 42px;
+        min-width: 42px;
+    }
+
+    .post-content {
+        font-size: 0.93rem;
+    }
+
+    .btn-outline-primary,
+    .forum-btn {
+        width: 100%;
+        margin-top: 0.5rem;
+    }
+
+    .post {
+        flex-direction: column;
+        align-items: stretch !important;
+        gap: 0.75rem;
+    }
+}
+
+.pagination {
+    justify-content: center;
+    gap: 6px;
+}
+
+.page-link {
+    border-radius: 10px !important;
+    border: none;
+    color: #2563eb;
+    padding: .6rem .9rem;
+    font-weight: 600;
+}
+
+.page-item.active .page-link {
+    background: #2563eb;
+    color: white;
+}
+
+.page-link:hover {
+    background: #eef4ff;
+}

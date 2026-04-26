@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Usuarios;
 
-use App\Models\Roles;
+use App\Http\Controllers\Controller;
+use App\Models\UsuarioRoles;
 use Illuminate\Http\Request;
 
-class RolesController extends Controller
+class UsuarioRolesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +35,7 @@ class RolesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Roles $roles)
+    public function show(UsuarioRoles $usuarioRoles)
     {
         //
     }
@@ -42,7 +43,7 @@ class RolesController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Roles $roles)
+    public function edit(UsuarioRoles $usuarioRoles)
     {
         //
     }
@@ -50,7 +51,7 @@ class RolesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Roles $roles)
+    public function update(Request $request, UsuarioRoles $usuarioRoles)
     {
         //
     }
@@ -58,7 +59,7 @@ class RolesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Roles $roles)
+    public function destroy(UsuarioRoles $usuarioRoles)
     {
         //
     }
