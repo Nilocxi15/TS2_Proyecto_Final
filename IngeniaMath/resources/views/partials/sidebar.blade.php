@@ -104,6 +104,12 @@
                 </a>
             </li>
 
+            <li>
+                <a href="{{ route('moderador.exercises.revisions') }}" class="nav-link">
+                    <i class="fas fa-clipboard-list"></i> Revisar Ejercicios
+                </a>
+            </li>
+
         @endif
 
     </ul>

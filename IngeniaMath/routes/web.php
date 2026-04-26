@@ -123,6 +123,13 @@ Route::middleware('auth')->group(function () {
             Route::get('/dashboard', fn() => view('dashboards.moderador'))
                 ->name('dashboard');
 
+            Route::prefix('exercises')->name('exercises.')->group(function () {
+                Route::get('/revisions', [EjercicioController::class, 'revisionsIndex'])->name('revisions');
+                Route::get('/{id}/review', [EjercicioController::class, 'review'])->name('review');
+                Route::patch('/{id}/approve', [EjercicioController::class, 'approve'])->name('approve');
+                Route::patch('/{id}/reject', [EjercicioController::class, 'reject'])->name('reject');
+            });
+
         });
 
     /*
@@ -136,5 +143,5 @@ Route::middleware('auth')->group(function () {
     // Rutas AJAX para selects dinámicos (sin API)
     Route::get('/subtemas/{moduloId}', [EjercicioController::class, 'getSubtemas']);
     Route::get('/ejercicios-publicados', [EjercicioController::class, 'getEjerciciosPublicados']);
-
+    Route::get('/ejercicios/{id}/duplicados', [EjercicioController::class, 'findDuplicates']);
 });
