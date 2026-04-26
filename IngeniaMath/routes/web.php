@@ -6,6 +6,7 @@ use App\Http\Controllers\BancoEjercicios\EjercicioController;
 use App\Http\Controllers\Foro\ForoController;
 use App\Http\Controllers\Foro\ModeracionForoController;
 use App\Http\Controllers\Foro\RespuestaForoController;
+use App\Http\Controllers\FlashcardsController;
 use App\Http\Controllers\RecursosController;
 use App\Http\Controllers\Usuarios\ProfileController;
 use App\Http\Controllers\Usuarios\UsuariosController;
@@ -55,7 +56,11 @@ Route::middleware('auth')->group(function () {
             Route::get('/learning-route', fn() => view('estudiante.ruta-aprendizaje'))->name('learning-route');
             // Rutas para la página de simulacros de ejercicios
             Route::get('/mock-exams', fn() => view('estudiante.simulacros'))->name('mock-exams');
-
+            // Rutas para la página de perfil del estudiante
+            Route::get('/profile', fn() => view('estudiante.perfil'))->name('profile');
+            // Rutas para la página de flashcards
+            Route::get('/flashcards', [FlashcardsController::class, 'index'])->name('flashcards');
+            Route::get('/flashcards/subtema/{subtema}', [FlashcardsController::class, 'subtema'])->name('flashcards.subtema');
         });
 
 
@@ -90,6 +95,18 @@ Route::middleware('auth')->group(function () {
                     Route::patch('/{id}/estado', [EjercicioController::class, 'cambiarEstado'])->name('cambiar-estado');
                     Route::delete('/{id}', [EjercicioController::class, 'destroy'])->name('destroy');
 
+                });
+
+            /*
+            |--------------------------------------------------------------------------
+            | Recursos Educativos - Módulo 5
+            |--------------------------------------------------------------------------        
+            */
+            Route::prefix('resources')
+                ->name('resources.')
+                ->group(function () {
+
+                    
                 });
         });
 

@@ -10,15 +10,24 @@
     <section class="resources-page py-4">
         <div class="container">
             <div class="resources-header">
-                <p class="eyebrow mb-2">Biblioteca Académica</p>
-                <h1 class="mb-2">Recursos Educativos</h1>
-                <p class="resources-subtitle mb-0">
-                    Explora diversos materiales por tema. Cada recurso se abre en una pestaña nueva para que mantengas tu
-                    progreso aquí.
+                <div class="hero-copy">
+                    <p class="eyebrow mb-2">Biblioteca Académica</p>
+                    <h1 class="mb-2">Recursos Educativos</h1>
+                    <p class="resources-subtitle mb-0">
+                        Explora diversos materiales por tema. Cada recurso se abre en una pestaña nueva para que mantengas
+                        tu
+                        progreso aquí.
 
-                </p>
-                <p></p>
-                <p class="resources-subtitle mb-0">Y recuerda "¡Id y enseñad a todos!"</p>
+                    </p>
+                    <p></p>
+                    <p class="resources-subtitle mb-0">Y recuerda "¡Id y enseñad a todos!"</p>
+                </div>
+
+                <div class="hero-actions">
+                    <a href="{{ route('student.flashcards') }}" class="btn btn-ui-inverse">
+                        <i class="fa-solid fa-layer-group me-1"></i> Flashcards
+                    </a>
+                </div>
             </div>
 
             <div class="filters-card mt-4">
@@ -113,7 +122,6 @@
                             $tipoClasses = [
                                 'VIDEO' => 'chip-video',
                                 'PDF' => 'chip-pdf',
-                                'FLASHCARD' => 'chip-flashcard',
                                 'SIMULADOR' => 'chip-simulador',
                             ];
                             $chipClass = $tipoClasses[$tipo] ?? 'chip-default';
@@ -121,7 +129,6 @@
                             $iconMap = [
                                 'VIDEO' => 'fa-solid fa-circle-play',
                                 'PDF' => 'fa-solid fa-file-pdf',
-                                'FLASHCARD' => 'fa-solid fa-layer-group',
                                 'SIMULADOR' => 'fa-solid fa-flask-vial',
                             ];
                             $iconClass = $iconMap[$tipo] ?? 'fa-solid fa-book';

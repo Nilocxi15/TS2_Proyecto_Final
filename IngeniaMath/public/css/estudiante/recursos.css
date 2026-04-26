@@ -1,3 +1,4 @@
+@import url('./shared-ui.css');
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap');
 
 :root {
@@ -30,6 +31,10 @@
 	padding: 2rem;
 	border-radius: 1.1rem;
 	box-shadow: var(--res-shadow);
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	gap: 1.5rem;
 }
 
 .resources-header .eyebrow {
@@ -48,6 +53,18 @@
 .resources-subtitle {
 	color: rgba(255, 255, 255, 0.9);
 	max-width: 68ch;
+}
+
+.hero-copy {
+	max-width: 760px;
+}
+
+.hero-actions {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	flex-wrap: wrap;
+	flex-shrink: 0;
 }
 
 .filters-card {
@@ -235,6 +252,7 @@
 
 @media (max-width: 767px) {
 	.resources-header {
+		display: block;
 		padding: 1.3rem;
 	}
 
