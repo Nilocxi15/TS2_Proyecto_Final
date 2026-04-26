@@ -94,6 +94,18 @@ Route::middleware('auth')->group(function () {
                     Route::delete('/{id}', [EjercicioController::class, 'destroy'])->name('destroy');
 
                 });
+
+            /*
+            |--------------------------------------------------------------------------
+            | Recursos Educativos - Módulo 5
+            |--------------------------------------------------------------------------        
+            */
+            Route::prefix('resources')
+                ->name('resources.')
+                ->group(function () {
+
+                    
+                });
         });
 
 
