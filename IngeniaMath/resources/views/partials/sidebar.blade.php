@@ -29,7 +29,7 @@
             </li>
 
             <li>
-                <a href="{{ route('student.forum') }}" class="nav-link">
+                <a href="{{ route('forum.index') }}" class="nav-link">
                     <i class="bi bi-chat"></i> Foro
                 </a>
             </li>
@@ -70,6 +70,12 @@
                 </a>
             </li>
 
+            <li>
+                <a href="{{ route('forum.index') }}" class="nav-link">
+                    <i class="bi bi-chat"></i> Foro
+                </a>
+            </li>
+
         @endif
 
 
@@ -90,6 +96,12 @@
                 </a>
             </li>
 
+            <li>
+                <a href="{{ route('forum.index') }}" class="nav-link">
+                    <i class="bi bi-chat"></i> Foro
+                </a>
+            </li>
+
         @endif
 
 
@@ -101,6 +113,12 @@
             <li>
                 <a href="/moderador/dashboard" class="nav-link">
                     <i class="fas fa-shield-alt"></i> Panel
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ route('forum.index') }}" class="nav-link">
+                    <i class="bi bi-chat"></i> Foro
                 </a>
             </li>
 
