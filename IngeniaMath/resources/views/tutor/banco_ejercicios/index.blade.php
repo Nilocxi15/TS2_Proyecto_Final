@@ -13,7 +13,7 @@
                 </h1>
                 <p class="text-grey-50">Gestiona todos los ejercicios de la plataforma</p>
             </div>
-            <a href="{{ route('tutor.ejercicios.create') }}" class="btn btn-primary">
+            <a href="{{ route('tutor.exercises.create') }}" class="btn btn-primary">
                 <i class="fas fa-plus me-2"></i>Nuevo Ejercicio
             </a>
         </div>
@@ -21,7 +21,7 @@
         <!-- Filtros -->
         <div class="card mb-4">
             <div class="card-body">
-                <form method="GET" action="{{ route('tutor.ejercicios.index') }}" class="row g-3">
+                <form method="GET" action="{{ route('tutor.exercises.index') }}" class="row g-3">
                     <div class="col-md-3">
                         <label class="form-label">Módulo</label>
                         <select name="modulo_id" class="form-select">
@@ -151,20 +151,20 @@
                                     <td>{{ $ejercicio->created_at ? $ejercicio->created_at->format('d/m/Y') : 'N/A' }}</td>
                                     <td>
                                         <div class="btn-group" role="group">
-                                            <a href="{{ route('tutor.ejercicios.show', $ejercicio->id) }}"
+                                            <a href="{{ route('tutor.exercises.show', $ejercicio->id) }}"
                                                class="btn btn-sm btn-outline-primary" title="Ver">
                                                 <i class="fas fa-eye"></i>
                                             </a>
 
                                             @if(in_array($ejercicio->estado, ['BORRADOR', 'DESHABILITADO']))
-                                                <a href="{{ route('tutor.ejercicios.edit', $ejercicio->id) }}"
+                                                <a href="{{ route('tutor.exercises.edit', $ejercicio->id) }}"
                                                    class="btn btn-sm btn-outline-warning" title="Editar">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
                                             @endif
 
                                             @if($ejercicio->estado != 'DESHABILITADO')
-                                                <form action="{{ route('tutor.ejercicios.destroy', $ejercicio->id) }}"
+                                                <form action="{{ route('tutor.exercises.destroy', $ejercicio->id) }}"
                                                       method="POST" class="d-inline"
                                                       onsubmit="return confirm('¿Deshabilitar este ejercicio?')">
                                                     @csrf
@@ -182,7 +182,7 @@
                                     <td colspan="8" class="text-center py-5">
                                         <i class="fas fa-inbox fa-3x text-muted mb-3 d-block"></i>
                                         <p class="text-muted">No hay ejercicios registrados</p>
-                                        <a href="{{ route('tutor.ejercicios.create') }}" class="btn btn-primary">
+                                        <a href="{{ route('tutor.exercises.create') }}" class="btn btn-primary">
                                             Crear primer ejercicio
                                         </a>
                                     </td>

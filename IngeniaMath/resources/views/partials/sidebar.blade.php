@@ -60,12 +60,12 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('tutor.ejercicios.index') }}">
+                <a class="nav-link" href="{{ route('tutor.exercises.index') }}">
                     <i class="fas fa-database me-1"></i> Ejercicios
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('tutor.ejercicios.create') }}">
+                <a class="nav-link" href="{{ route('tutor.exercises.create') }}">
                     <i class="fas fa-plus-circle me-1"></i> Nuevo Ejercicio
                 </a>
             </li>
@@ -111,8 +111,14 @@
         @if(auth()->user()->tieneRol(RolEnum::REVISOR->value))
 
             <li>
-                <a href="/moderador/dashboard" class="nav-link">
+                <a href="{{ route('moderador.dashboard') }}" class="nav-link">
                     <i class="fas fa-shield-alt"></i> Panel
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ route('moderador.exercises.revisions') }}" class="nav-link">
+                    <i class="fas fa-clipboard-list"></i> Revisar Ejercicios
                 </a>
             </li>
 
