@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrarse | IngeniaMath</title>
 
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -83,29 +85,34 @@
                         @enderror
                     </div>
 
-                    <div class="field-group">
+                    <div class="field-group password-group">
                         <label for="password">Contraseña</label>
-                        <input
-                            id="password"
-                            name="password"
-                            type="password"
-                            autocomplete="new-password"
-                            required
-                            placeholder="Mínimo 8 caracteres">
+                        <div class="input-wrapper">
+                            <input type="password" name="password" id="password" autocomplete="new-password" required placeholder="Mínimo 8 caracteres">
+
+                            <button type="button" class="toggle-password" onclick="togglePassword()">
+                                <i class="bi bi-eye" id="eyeIcon"></i>
+                            </button>
+                        </div>
                         @error('password')
-                            <p class="error">{{ $message }}</p>
+                        <p class="error">{{ $message }}</p>
                         @enderror
                     </div>
 
-                    <div class="field-group">
+                    <div class="field-group password-group">
                         <label for="password_confirmation">Confirmar contraseña</label>
-                        <input
-                            id="password_confirmation"
-                            name="password_confirmation"
-                            type="password"
-                            autocomplete="new-password"
-                            required
-                            placeholder="Confirma tu contraseña">
+                        <div class="input-wrapper">
+                            <input
+                                id="password_confirmation"
+                                name="password_confirmation"
+                                type="password"
+                                autocomplete="new-password"
+                                required
+                                placeholder="Confirma tu contraseña">
+                            <button type="button" class="toggle-password" onclick="toggleConfirmPassword()">
+                                <i class="bi bi-eye" id="eyeIcon2"></i>
+                            </button>
+                        </div>
                         @error('password_confirmation')
                             <p class="error">{{ $message }}</p>
                         @enderror
@@ -119,6 +126,37 @@
             </section>
         </main>
     </div>
+    <script>
+        function togglePassword() {
+            const input = document.getElementById('password');
+            const icon = document.getElementById('eyeIcon');
+
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('bi-eye');
+                icon.classList.add('bi-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('bi-eye-slash');
+                icon.classList.add('bi-eye');
+            }
+        }
+
+        function toggleConfirmPassword() {
+            const input = document.getElementById('password_confirmation');
+            const icon = document.getElementById('eyeIcon2');
+
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('bi-eye');
+                icon.classList.add('bi-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('bi-eye-slash');
+                icon.classList.add('bi-eye');
+            }
+        }
+    </script>
 
 </body>
 
