@@ -79,13 +79,13 @@
         @if(auth()->user()->tieneRol(RolEnum::ADMINISTRADOR->value))
 
             <li>
-                <a href="/admin/dashboard" class="nav-link">
+                <a href="{{ route('admin.dashboard') }}" class="nav-link">
                     <i class="fas fa-chart-pie"></i> Dashboard
                 </a>
             </li>
 
             <li>
-                <a href="#" class="nav-link">
+                <a href="{{ route('admin.users.index') }}" class="nav-link">
                     <i class="fas fa-users"></i> Usuarios
                 </a>
             </li>

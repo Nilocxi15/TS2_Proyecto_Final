@@ -1,11 +1,12 @@
 <?php
 
-use App\Http\Controllers\BancoEjercicios\EjercicioController;
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\RecursosController;
-use App\Http\Controllers\UsuariosController;
-use Illuminate\Support\Facades\Route;
 use App\Enums\RolEnum;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\BancoEjercicios\EjercicioController;
+use App\Http\Controllers\RecursosController;
+use App\Http\Controllers\Usuarios\ProfileController;
+use App\Http\Controllers\Usuarios\UsuariosController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,8 +54,6 @@ Route::middleware('auth')->group(function () {
             Route::get('/learning-route', fn() => view('estudiante.ruta-aprendizaje'))->name('learning-route');
             // Rutas para la página de simulacros de ejercicios
             Route::get('/mock-exams', fn() => view('estudiante.simulacros'))->name('mock-exams');
-            // Rutas para la página de perfil del estudiante
-            Route::get('/profile', fn() => view('estudiante.perfil'))->name('profile');
 
         });
 
@@ -107,6 +106,16 @@ Route::middleware('auth')->group(function () {
             Route::get('/dashboard', fn() => view('dashboards.admin'))
                 ->name('dashboard');
 
+            // Usuarios
+            Route::prefix('users')->name('users.')->group(function () {
+                Route::get('/', [UsuariosController::class, 'index'])->name('index');
+                Route::get('/create', [UsuariosController::class, 'create'])->name('create');
+                Route::post('/', [UsuariosController::class, 'storeAdmin'])->name('store');
+                Route::get('/{id}', [UsuariosController::class, 'show'])->name('show');
+                Route::get('/{id}/edit', [UsuariosController::class, 'edit'])->name('edit');
+                Route::put('/{id}', [UsuariosController::class, 'update'])->name('update');
+                Route::delete('/{id}', [UsuariosController::class, 'destroy'])->name('destroy');
+            });
         });
 
 
@@ -131,6 +140,9 @@ Route::middleware('auth')->group(function () {
     |--------------------------------------------------------------------------
     */
     // logout
+    // Rutas para la página de perfil
+    Route::get('/profile', fn() => view('dashboards.perfil'))->name('profile');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::post('/logout', [LoginController::class, 'destroy'])->middleware('auth')->name('logout');
 
     // Rutas AJAX para selects dinámicos (sin API)
