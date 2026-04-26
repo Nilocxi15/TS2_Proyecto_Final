@@ -82,8 +82,8 @@ Route::middleware('auth')->group(function () {
             | Banco de Ejercicios - Módulo 2
             |--------------------------------------------------------------------------
             */
-            Route::prefix('ejercicios')
-                ->name('ejercicios.')
+            Route::prefix('exercises')
+                ->name('exercises.')
                 ->group(function () {
 
                     Route::get('/', [EjercicioController::class, 'index'])->name('index');

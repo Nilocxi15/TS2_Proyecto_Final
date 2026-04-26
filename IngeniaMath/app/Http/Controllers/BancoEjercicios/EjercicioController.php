@@ -53,7 +53,7 @@ class EjercicioController extends Controller
             'EXAMEN' => 'Nivel Examen Real',
         ];
         
-        return view('BancoEjercicios.Tutor.index', compact('ejercicios', 'modulos', 'estados', 'dificultades'));
+        return view('tutor.banco_ejercicios.index', compact('ejercicios', 'modulos', 'estados', 'dificultades'));
     }
     
     // Mostrar formulario de creación
@@ -76,7 +76,7 @@ class EjercicioController extends Controller
         // Temporal: obtener usuarios (después se usará auth)
         $usuarios = Usuarios::all();
         
-        return view('BancoEjercicios.Tutor.create', compact('modulos', 'dificultades', 'tipos', 'usuarios'));
+        return view('tutor.banco_ejercicios.create', compact('modulos', 'dificultades', 'tipos', 'usuarios'));
     }
     
     // Guardar nuevo ejercicio
@@ -119,7 +119,7 @@ class EjercicioController extends Controller
             
             DB::commit();
             
-            return redirect()->route('ejercicios.index')
+            return redirect()->route('excercises.index')
                 ->with('success', 'Ejercicio creado exitosamente.');
                 
         } catch (\Exception $e) {
@@ -155,7 +155,7 @@ class EjercicioController extends Controller
             'DESHABILITADO' => 'Deshabilitado',
         ];
         
-        return view('BancoEjercicios.Tutor.show', compact('ejercicio', 'dificultades', 'tipos', 'estados'));
+        return view('tutor.banco_ejercicios.show', compact('ejercicio', 'dificultades', 'tipos', 'estados'));
     }
     
     // Mostrar formulario de edición
@@ -165,7 +165,7 @@ class EjercicioController extends Controller
         
         // Solo se puede editar si está en BORRADOR o DESHABILITADO
         if (!in_array($ejercicio->estado, ['BORRADOR', 'DESHABILITADO'])) {
-            return redirect()->route('ejercicios.show', $ejercicio)
+            return redirect()->route('excercises.show', $ejercicio)
                 ->with('error', 'Solo se pueden editar ejercicios en estado Borrador o Deshabilitado.');
         }
         
@@ -191,7 +191,7 @@ class EjercicioController extends Controller
             ->limit(50)
             ->get();
         
-        return view('BancoEjercicios.Tutor.edit', compact('ejercicio', 'modulos', 'dificultades', 'tipos', 'usuarios', 'ejerciciosExistentes'));
+        return view('tutor.banco_ejercicios.edit', compact('ejercicio', 'modulos', 'dificultades', 'tipos', 'usuarios', 'ejerciciosExistentes'));
     }
     
     // Actualizar ejercicio
@@ -226,7 +226,7 @@ class EjercicioController extends Controller
             
             DB::commit();
             
-            return redirect()->route('ejercicios.show', $ejercicio)
+            return redirect()->route('excercises.show', $ejercicio)
                 ->with('success', 'Ejercicio actualizado exitosamente.');
                 
         } catch (\Exception $e) {
@@ -282,7 +282,7 @@ class EjercicioController extends Controller
                 'DESHABILITADO' => 'Ejercicio deshabilitado',
             ];
             
-            return redirect()->route('ejercicios.show', $ejercicio)
+            return redirect()->route('excercises.show', $ejercicio)
                 ->with('success', $mensajes[$nuevoEstado] ?? "Estado cambiado a {$nuevoEstado}");
                 
         } catch (\Exception $e) {
@@ -299,7 +299,7 @@ class EjercicioController extends Controller
         // Cambiar a DESHABILITADO en lugar de eliminar
         $ejercicio->update(['estado' => 'DESHABILITADO']);
         
-        return redirect()->route('ejercicios.index')
+        return redirect()->route('excercises.index')
             ->with('success', 'Ejercicio deshabilitado exitosamente.');
     }
     

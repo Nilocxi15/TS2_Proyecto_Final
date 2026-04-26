@@ -11,7 +11,7 @@
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">
-                            <a href="{{ route('tutor.ejercicios.index') }}" class="text-grey text-decoration-none">
+                            <a href="{{ route('tutor.exercises.index') }}" class="text-grey text-decoration-none">
                                 <i class="fas fa-database me-1"></i>Ejercicios
                             </a>
                         </li>
@@ -25,11 +25,11 @@
                 </h1>
             </div>
             <div>
-                <a href="{{ route('tutor.ejercicios.index') }}" class="btn btn-secondary">
+                <a href="{{ route('tutor.exercises.index') }}" class="btn btn-secondary">
                     <i class="fas fa-arrow-left me-2"></i>Volver
                 </a>
                 @if(in_array($ejercicio->estado, ['BORRADOR', 'DESHABILITADO']))
-                    <a href="{{ route('tutor.ejercicios.edit', $ejercicio->id) }}" class="btn btn-warning">
+                    <a href="{{ route('tutor.exercises.edit', $ejercicio->id) }}" class="btn btn-warning">
                         <i class="fas fa-edit me-2"></i>Editar
                     </a>
                 @endif
@@ -76,7 +76,7 @@
                             </div>
                             <div>
                                 <!-- Formulario para cambiar estado (flujo de aprobación) -->
-                                <form action="{{ route('tutor.ejercicios.cambiar-estado', $ejercicio->id) }}"
+                                <form action="{{ route('tutor.exercises.cambiar-estado', $ejercicio->id) }}"
                                       method="POST" class="d-inline" id="estadoForm">
                                     @csrf
                                     @method('PATCH')
@@ -196,7 +196,7 @@
                         <div class="card-body">
                             <div class="list-group">
                                 @foreach($ejercicio->relacionados as $relacionado)
-                                    <a href="{{ route('tutor.ejercicios.show', $relacionado->id) }}"
+                                    <a href="{{ route('tutor.exercises.show', $relacionado->id) }}"
                                        class="list-group-item list-group-item-action">
                                         <div class="d-flex justify-content-between align-items-center">
                                             <div>

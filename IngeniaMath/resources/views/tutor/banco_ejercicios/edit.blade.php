@@ -35,7 +35,7 @@
                         <ul class="mt-2">
                             @foreach(session('duplicados') as $duplicado)
                                 <li>
-                                    <a href="{{ route('tutor.ejercicios.show', $duplicado->id) }}" target="_blank">
+                                    <a href="{{ route('tutor.exercises.show', $duplicado->id) }}" target="_blank">
                                         Ejercicio #{{ $duplicado->id }}
                                     </a>:
                                     {{ Str::limit($duplicado->enunciado, 100) }}
@@ -60,7 +60,7 @@
                 </div>
             @endif
 
-            <form action="{{ route('tutor.ejercicios.update', $ejercicio->id) }}" method="POST" id="ejercicioForm">
+            <form action="{{ route('tutor.exercises.update', $ejercicio->id) }}" method="POST" id="ejercicioForm">
                 @csrf
                 @method('PUT')
 
@@ -256,7 +256,7 @@
 
                 <!-- Botones -->
                 <div class="d-flex justify-content-between">
-                    <a href="{{ route('tutor.ejercicios.show', $ejercicio->id) }}" class="btn btn-secondary">
+                    <a href="{{ route('tutor.exercises.show', $ejercicio->id) }}" class="btn btn-secondary">
                         <i class="fas fa-arrow-left me-2"></i>Cancelar
                     </a>
                     <button type="submit" class="btn btn-primary" id="submitBtn">
