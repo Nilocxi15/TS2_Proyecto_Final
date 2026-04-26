@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BancoEjercicios\EjercicioController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\FlashcardsController;
 use App\Http\Controllers\RecursosController;
 use App\Http\Controllers\UsuariosController;
 use Illuminate\Support\Facades\Route;
@@ -55,12 +56,9 @@ Route::middleware('auth')->group(function () {
             Route::get('/mock-exams', fn() => view('estudiante.simulacros'))->name('mock-exams');
             // Rutas para la página de perfil del estudiante
             Route::get('/profile', fn() => view('estudiante.perfil'))->name('profile');
-
-            // RUTAS PARA LA PÁGINA DE FLASHCARDS
-            // Galería de flashcards
-            Route::get('/flashcards', fn() => view('estudiante.flashcards-galery'))->name('flashcards');
-            // Detalle de flashcard
-            Route::get('/flashcards/{id}', fn($id) => view('estudiante.flashcards', ['id' => $id]))->name('flashcards.detail');
+            // Rutas para la página de flashcards
+            Route::get('/flashcards', [FlashcardsController::class, 'index'])->name('flashcards');
+            Route::get('/flashcards/subtema/{subtema}', [FlashcardsController::class, 'subtema'])->name('flashcards.subtema');
         });
 
 

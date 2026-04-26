@@ -1,0 +1,143 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap');
+
+:root {
+	--ui-primary: #1E3A8A;
+	--ui-secondary: #3B82F6;
+	--ui-success: #10B981;
+	--ui-error: #EF4444;
+	--ui-bg: #F9FAFB;
+	--ui-text: #111827;
+	--ui-surface: #ffffff;
+	--ui-border: #D1D5DB;
+	--ui-muted: #6B7280;
+	--ui-shadow: 0 12px 30px rgba(17, 24, 39, 0.08);
+	--ui-shadow-soft: 0 6px 16px rgba(17, 24, 39, 0.08);
+	--ui-radius-card: 20px;
+	--ui-radius-btn: 8px;
+}
+
+body {
+	font-family: 'Inter', sans-serif;
+	color: var(--ui-text);
+	background:
+		radial-gradient(circle at top left, rgba(59, 130, 246, 0.09), transparent 28%),
+		radial-gradient(circle at right top, rgba(16, 185, 129, 0.08), transparent 24%),
+		var(--ui-bg);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.font-heading {
+	font-family: 'Poppins', sans-serif;
+}
+
+.btn,
+.form-control,
+.form-select {
+	border-radius: var(--ui-radius-btn) !important;
+}
+
+.btn-primary {
+	background: linear-gradient(135deg, var(--ui-primary), var(--ui-secondary));
+	border-color: transparent;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+	background: linear-gradient(135deg, #1d4ed8, var(--ui-secondary));
+	border-color: transparent;
+}
+
+.btn-outline-primary {
+	color: var(--ui-primary);
+	border-color: rgba(30, 58, 138, 0.3);
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:focus {
+	background: rgba(30, 58, 138, 0.08);
+	color: var(--ui-primary);
+	border-color: rgba(30, 58, 138, 0.4);
+}
+
+.btn-ui-inverse {
+	background: rgba(255, 255, 255, 0.08);
+	border-color: rgba(255, 255, 255, 0.72);
+	color: #ffffff;
+	backdrop-filter: blur(8px);
+	-webkit-backdrop-filter: blur(8px);
+	box-shadow: 0 8px 18px rgba(15, 23, 42, 0.12);
+}
+
+.btn-ui-inverse:hover,
+.btn-ui-inverse:focus {
+	background: #ffffff;
+	border-color: #ffffff;
+	color: var(--ui-primary);
+}
+
+.btn-outline-secondary {
+	border-color: var(--ui-border);
+	color: #374151;
+}
+
+.btn-outline-secondary:hover,
+.btn-outline-secondary:focus {
+	background: #f3f4f6;
+	color: var(--ui-text);
+	border-color: var(--ui-border);
+}
+
+.form-control,
+.form-select {
+	border: 1px solid var(--ui-border);
+}
+
+.form-control:focus,
+.form-select:focus {
+	border-color: var(--ui-secondary);
+	box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.2);
+}
+
+.ui-card,
+.ui-panel,
+.ui-empty-state {
+	background: var(--ui-surface);
+	border: 1px solid rgba(209, 213, 219, 0.8);
+	border-radius: var(--ui-radius-card);
+	box-shadow: var(--ui-shadow-soft);
+}
+
+.ui-title,
+.ui-kicker,
+.ui-label,
+.ui-chip,
+.ui-nav-link {
+	font-family: 'Poppins', sans-serif;
+}
+
+.ui-empty-state {
+	padding: 2rem;
+	text-align: center;
+}
+
+.ui-empty-state i {
+	font-size: 2rem;
+	color: var(--ui-secondary);
+	margin-bottom: 0.75rem;
+}
+
+.ui-empty-state p {
+	color: var(--ui-muted);
+}
+
+.pagination {
+	--bs-pagination-color: var(--ui-primary);
+	--bs-pagination-hover-color: #1d4ed8;
+	--bs-pagination-active-bg: var(--ui-secondary);
+	--bs-pagination-active-border-color: var(--ui-secondary);
+}
