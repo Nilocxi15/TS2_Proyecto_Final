@@ -13,7 +13,7 @@
             <p class="text-muted mt-2">Modifica los campos que necesites actualizar</p>
             <div class="alert alert-info mb-0 mt-2">
                 <i class="fas fa-info-circle me-2"></i>
-                <strong>Estado actual:</strong> 
+                <strong>Estado actual:</strong>
                 <span class="badge bg-{{ $ejercicio->estado == 'BORRADOR' ? 'secondary' : 'warning' }}">
                     {{ $ejercicio->estado == 'BORRADOR' ? 'Borrador' : 'Deshabilitado' }}
                 </span>
@@ -22,7 +22,7 @@
                 @endif
             </div>
         </div>
-        
+
         <div class="card-body">
             <!-- Alertas -->
             @if(session('warning'))
@@ -35,9 +35,9 @@
                         <ul class="mt-2">
                             @foreach(session('duplicados') as $duplicado)
                                 <li>
-                                    <a href="{{ route('ejercicios.show', $duplicado->id) }}" target="_blank">
+                                    <a href="{{ route('tutor.ejercicios.show', $duplicado->id) }}" target="_blank">
                                         Ejercicio #{{ $duplicado->id }}
-                                    </a>: 
+                                    </a>:
                                     {{ Str::limit($duplicado->enunciado, 100) }}
                                 </li>
                             @endforeach
@@ -60,7 +60,7 @@
                 </div>
             @endif
 
-            <form action="{{ route('ejercicios.update', $ejercicio->id) }}" method="POST" id="ejercicioForm">
+            <form action="{{ route('tutor.ejercicios.update', $ejercicio->id) }}" method="POST" id="ejercicioForm">
                 @csrf
                 @method('PUT')
 
@@ -70,7 +70,7 @@
                         <label class="form-label fw-bold">
                             <i class="fas fa-book me-1 text-primary"></i>Módulo *
                         </label>
-                        <select name="modulo_id" class="form-select @error('modulo_id') is-invalid @enderror" 
+                        <select name="modulo_id" class="form-select @error('modulo_id') is-invalid @enderror"
                                 id="modulo_id" required>
                             <option value="">Seleccione un módulo</option>
                             @foreach($modulos as $modulo)
@@ -149,8 +149,8 @@
                     <label class="form-label fw-bold">
                         <i class="fas fa-file-alt me-1 text-primary"></i>Enunciado del Problema *
                     </label>
-                    <textarea name="enunciado" rows="4" 
-                              class="form-control math-field @error('enunciado') is-invalid @enderror" 
+                    <textarea name="enunciado" rows="4"
+                              class="form-control math-field @error('enunciado') is-invalid @enderror"
                               placeholder="Ej: Resuelve la siguiente ecuación: $$x^2 - 5x + 6 = 0$$"
                               required>{{ old('enunciado', $ejercicio->enunciado) }}</textarea>
                     <small class="text-muted">
@@ -172,7 +172,7 @@
                     <label class="form-label fw-bold">
                         <i class="fas fa-image me-1 text-primary"></i>Imagen/Diagrama (opcional)
                     </label>
-                    <input type="url" name="imagen" class="form-control @error('imagen') is-invalid @enderror" 
+                    <input type="url" name="imagen" class="form-control @error('imagen') is-invalid @enderror"
                            placeholder="https://ejemplo.com/imagen.jpg" value="{{ old('imagen', $ejercicio->imagen) }}">
                     <small class="text-muted">URL de una imagen de apoyo para el ejercicio</small>
                     @error('imagen')
@@ -185,9 +185,9 @@
                     <label class="form-label fw-bold">
                         <i class="fas fa-check-circle me-1 text-success"></i>Respuesta Correcta *
                     </label>
-                    <input type="text" name="respuesta_correcta" 
-                           class="form-control @error('respuesta_correcta') is-invalid @enderror" 
-                           placeholder="Ej: x = 2, x = 3" 
+                    <input type="text" name="respuesta_correcta"
+                           class="form-control @error('respuesta_correcta') is-invalid @enderror"
+                           placeholder="Ej: x = 2, x = 3"
                            value="{{ old('respuesta_correcta', $ejercicio->respuesta_correcta) }}" required>
                     @error('respuesta_correcta')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -199,8 +199,8 @@
                     <label class="form-label fw-bold">
                         <i class="fas fa-list-ol me-1 text-primary"></i>Solución Paso a Paso *
                     </label>
-                    <textarea name="solucion" rows="5" 
-                              class="form-control math-field @error('solucion') is-invalid @enderror" 
+                    <textarea name="solucion" rows="5"
+                              class="form-control math-field @error('solucion') is-invalid @enderror"
                               placeholder="1. Identificamos que es una ecuación cuadrática&#10;2. Aplicamos la fórmula general...&#10;3. Calculamos las raíces..."
                               required>{{ old('solucion', $ejercicio->solucion) }}</textarea>
                     <small class="text-muted">Explicación detallada de cada paso para resolver el ejercicio</small>
@@ -214,8 +214,8 @@
                     <label class="form-label fw-bold">
                         <i class="fas fa-graduation-cap me-1 text-primary"></i>Explicación Conceptual *
                     </label>
-                    <textarea name="explicacion" rows="4" 
-                              class="form-control math-field @error('explicacion') is-invalid @enderror" 
+                    <textarea name="explicacion" rows="4"
+                              class="form-control math-field @error('explicacion') is-invalid @enderror"
                               placeholder="Explica la teoría detrás del ejercicio: qué concepto se aplica, por qué funciona, etc."
                               required>{{ old('explicacion', $ejercicio->explicacion) }}</textarea>
                     <small class="text-muted">Material de apoyo que explica el tema relacionado</small>
@@ -229,9 +229,9 @@
                     <label class="form-label fw-bold">
                         <i class="fas fa-hourglass-half me-1 text-primary"></i>Tiempo Estimado (minutos) *
                     </label>
-                    <input type="number" name="tiempo_estimado" 
-                           class="form-control @error('tiempo_estimado') is-invalid @enderror" 
-                           placeholder="5" min="1" max="30" 
+                    <input type="number" name="tiempo_estimado"
+                           class="form-control @error('tiempo_estimado') is-invalid @enderror"
+                           placeholder="5" min="1" max="30"
                            value="{{ old('tiempo_estimado', $ejercicio->tiempo_estimado) }}" required>
                     @error('tiempo_estimado')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -256,7 +256,7 @@
 
                 <!-- Botones -->
                 <div class="d-flex justify-content-between">
-                    <a href="{{ route('ejercicios.show', $ejercicio->id) }}" class="btn btn-secondary">
+                    <a href="{{ route('tutor.ejercicios.show', $ejercicio->id) }}" class="btn btn-secondary">
                         <i class="fas fa-arrow-left me-2"></i>Cancelar
                     </a>
                     <button type="submit" class="btn btn-primary" id="submitBtn">
@@ -324,20 +324,20 @@
 <script>
     // Variables globales
     let ejerciciosRelacionadosIds = {{ json_encode($ejercicio->relacionados->pluck('id')) }};
-    
+
     // Cargar subtemas según el módulo seleccionado
     document.getElementById('modulo_id').addEventListener('change', function() {
         const moduloId = this.value;
         const subtemaSelect = document.getElementById('subtema_id');
-        
+
         if (!moduloId) {
             subtemaSelect.innerHTML = '<option value="">Primero seleccione un módulo</option>';
             return;
         }
-        
+
         // Mostrar loading
         subtemaSelect.innerHTML = '<option value="">Cargando subtemas...</option>';
-        
+
         // Obtener subtemas vía AJAX
         fetch(`/subtemas/${moduloId}`)
             .then(response => response.json())
@@ -354,12 +354,12 @@
                 subtemaSelect.innerHTML = '<option value="">Error al cargar subtemas</option>';
             });
     });
-    
+
     // Previsualizar enunciado
     const enunciadoTextarea = document.querySelector('textarea[name="enunciado"]');
     const previewDiv = document.getElementById('enunciadoPreview');
     const previewContent = document.getElementById('previewContent');
-    
+
     enunciadoTextarea.addEventListener('input', function() {
         const value = this.value;
         if (value.trim()) {
@@ -372,12 +372,12 @@
             previewDiv.style.display = 'none';
         }
     });
-    
+
     // Disparar evento inicial si hay valor
     if (enunciadoTextarea.value.trim()) {
         enunciadoTextarea.dispatchEvent(new Event('input'));
     }
-    
+
     // Cargar ejercicios existentes para relacionados
     function cargarEjerciciosRelacionados() {
         const relacionadosSelect = document.getElementById('relacionados');
@@ -401,10 +401,10 @@
                 relacionadosSelect.innerHTML = '<option value="">Error al cargar ejercicios</option>';
             });
     }
-    
+
     // Cargar ejercicios relacionados al iniciar
     cargarEjerciciosRelacionados();
-    
+
     // Si el módulo ya tiene un valor seleccionado y es diferente al actual, cargar subtemas
     const moduloActual = {{ $ejercicio->modulo_id }};
     if (document.getElementById('modulo_id').value != moduloActual) {

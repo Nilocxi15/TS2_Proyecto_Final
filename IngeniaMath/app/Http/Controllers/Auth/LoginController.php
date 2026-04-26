@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+use App\Enums\RolEnum;
 
 class LoginController extends Controller
 {
@@ -31,10 +32,21 @@ class LoginController extends Controller
             ]);
         }
 
-        $request->session()->regenerate();
+        $usuario = Auth::user();
 
-        // Cambiar esto después de tener el resto de roles implementados
-        return redirect()->intended(route('home-estudiante'));
+        if ($usuario->tieneRol(RolEnum::ADMINISTRADOR->value)) {
+            return redirect()->route('admin.dashboard');
+        }
+
+        if ($usuario->tieneRol(RolEnum::TUTOR->value)) {
+            return redirect()->route('tutor.dashboard');
+        }
+
+        if ($usuario->tieneRol(RolEnum::REVISOR->value)) {
+            return redirect()->route('moderador.dashboard');
+        }
+
+        return redirect()->route('student.dashboard');
     }
 
     public function destroy(Request $request): RedirectResponse

@@ -1,4 +1,4 @@
-@extends('layouts.navbar-estudiante')
+@extends('layouts.app')
 
 @section('title', 'Recursos Educativos')
 
@@ -22,7 +22,7 @@
             </div>
 
             <div class="filters-card mt-4">
-                <form method="GET" action="{{ route('resources-estudiante') }}" id="filtrosRecursosForm">
+                <form method="GET" action="{{ route('student.resources') }}" id="filtrosRecursosForm">
                     <div class="row g-3 align-items-end">
                         <div class="col-12 col-lg-4">
                             <label for="q" class="form-label">Buscar</label>
@@ -91,7 +91,7 @@
                             <button class="btn btn-primary" type="submit">
                                 <i class="fa-solid fa-filter me-1"></i> Aplicar filtros
                             </button>
-                            <a href="{{ route('resources-estudiante') }}" class="btn btn-outline-secondary">
+                            <a href="{{ route('student.resources') }}" class="btn btn-outline-secondary">
                                 <i class="fa-solid fa-rotate-left me-1"></i> Limpiar
                             </a>
                         </div>
@@ -163,7 +163,7 @@
                     <i class="fa-regular fa-folder-open"></i>
                     <h2>No se encontraron recursos</h2>
                     <p>Ajusta los filtros o limpia la búsqueda para ver más resultados.</p>
-                    <a href="{{ route('resources-estudiante') }}" class="btn btn-outline-primary">Ver todos los recursos</a>
+                    <a href="{{ route('student.resources') }}" class="btn btn-outline-primary">Ver todos los recursos</a>
                 </div>
             @endif
         </div>

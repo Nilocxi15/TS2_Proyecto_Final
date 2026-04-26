@@ -11,7 +11,7 @@
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">
-                            <a href="{{ route('ejercicios.index') }}" class="text-grey text-decoration-none">
+                            <a href="{{ route('tutor.ejercicios.index') }}" class="text-grey text-decoration-none">
                                 <i class="fas fa-database me-1"></i>Ejercicios
                             </a>
                         </li>
@@ -25,11 +25,11 @@
                 </h1>
             </div>
             <div>
-                <a href="{{ route('ejercicios.index') }}" class="btn btn-secondary">
+                <a href="{{ route('tutor.ejercicios.index') }}" class="btn btn-secondary">
                     <i class="fas fa-arrow-left me-2"></i>Volver
                 </a>
                 @if(in_array($ejercicio->estado, ['BORRADOR', 'DESHABILITADO']))
-                    <a href="{{ route('ejercicios.edit', $ejercicio->id) }}" class="btn btn-warning">
+                    <a href="{{ route('tutor.ejercicios.edit', $ejercicio->id) }}" class="btn btn-warning">
                         <i class="fas fa-edit me-2"></i>Editar
                     </a>
                 @endif
@@ -76,17 +76,17 @@
                             </div>
                             <div>
                                 <!-- Formulario para cambiar estado (flujo de aprobación) -->
-                                <form action="{{ route('ejercicios.cambiar-estado', $ejercicio->id) }}" 
+                                <form action="{{ route('tutor.ejercicios.cambiar-estado', $ejercicio->id) }}"
                                       method="POST" class="d-inline" id="estadoForm">
                                     @csrf
                                     @method('PATCH')
-                                    
+
                                     @if($ejercicio->estado == 'BORRADOR')
                                         <button type="submit" name="estado" value="REVISION" class="btn btn-info">
                                             <i class="fas fa-paper-plane me-2"></i>Enviar a Revisión
                                         </button>
                                     @endif
-                                    
+
                                     @if($ejercicio->estado == 'REVISION')
                                         <div class="btn-group">
                                             <button type="submit" name="estado" value="APROBADO" class="btn btn-success">
@@ -97,26 +97,26 @@
                                             </button>
                                         </div>
                                     @endif
-                                    
+
                                     @if($ejercicio->estado == 'APROBADO')
                                         <button type="submit" name="estado" value="PUBLICADO" class="btn btn-success">
                                             <i class="fas fa-globe me-2"></i>Publicar
                                         </button>
                                     @endif
-                                    
+
                                     @if($ejercicio->estado == 'PUBLICADO')
                                         <button type="submit" name="estado" value="DESHABILITADO" class="btn btn-danger"
                                                 onclick="return confirm('¿Deshabilitar este ejercicio? Dejará de estar disponible.')">
                                             <i class="fas fa-ban me-2"></i>Deshabilitar
                                         </button>
                                     @endif
-                                    
+
                                     @if($ejercicio->estado == 'DESHABILITADO')
                                         <button type="submit" name="estado" value="BORRADOR" class="btn btn-warning">
                                             <i class="fas fa-undo me-2"></i>Reactivar
                                         </button>
                                     @endif
-                                    
+
                                     <input type="hidden" name="revisor_id" value="1">
                                 </form>
                             </div>
@@ -196,7 +196,7 @@
                         <div class="card-body">
                             <div class="list-group">
                                 @foreach($ejercicio->relacionados as $relacionado)
-                                    <a href="{{ route('ejercicios.show', $relacionado->id) }}" 
+                                    <a href="{{ route('tutor.ejercicios.show', $relacionado->id) }}"
                                        class="list-group-item list-group-item-action">
                                         <div class="d-flex justify-content-between align-items-center">
                                             <div>
@@ -389,7 +389,7 @@
             MathJax.typesetPromise();
         }
     });
-    
+
     // Confirmación antes de cambiar estado crítico
     const estadoForm = document.getElementById('estadoForm');
     if (estadoForm) {
