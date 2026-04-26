@@ -29,6 +29,12 @@
             </li>
 
             <li>
+                <a href="{{ route('student.flashcards') }}" class="nav-link">
+                    <i class="bi bi-card-list"></i> Flashcards
+                </a>
+            </li>
+
+            <li>
                 <a href="{{ route('student.forum') }}" class="nav-link">
                     <i class="bi bi-chat"></i> Foro
                 </a>

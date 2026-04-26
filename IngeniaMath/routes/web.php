@@ -56,6 +56,11 @@ Route::middleware('auth')->group(function () {
             // Rutas para la página de perfil del estudiante
             Route::get('/profile', fn() => view('estudiante.perfil'))->name('profile');
 
+            // RUTAS PARA LA PÁGINA DE FLASHCARDS
+            // Galería de flashcards
+            Route::get('/flashcards', fn() => view('estudiante.flashcards-galery'))->name('flashcards');
+            // Detalle de flashcard
+            Route::get('/flashcards/{id}', fn($id) => view('estudiante.flashcards', ['id' => $id]))->name('flashcards.detail');
         });
 
 

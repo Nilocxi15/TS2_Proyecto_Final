@@ -112,16 +112,14 @@
                             $tipo = strtoupper((string) $recurso->tipo);
                             $tipoClasses = [
                                 'VIDEO' => 'chip-video',
-                                'PDF' => 'chip-pdf',
-                                'FLASHCARD' => 'chip-flashcard',
+                                'PDF' => 'chip-pdf',                                
                                 'SIMULADOR' => 'chip-simulador',
                             ];
                             $chipClass = $tipoClasses[$tipo] ?? 'chip-default';
 
                             $iconMap = [
                                 'VIDEO' => 'fa-solid fa-circle-play',
-                                'PDF' => 'fa-solid fa-file-pdf',
-                                'FLASHCARD' => 'fa-solid fa-layer-group',
+                                'PDF' => 'fa-solid fa-file-pdf',                                
                                 'SIMULADOR' => 'fa-solid fa-flask-vial',
                             ];
                             $iconClass = $iconMap[$tipo] ?? 'fa-solid fa-book';
