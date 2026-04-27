@@ -45,16 +45,16 @@
                         <p class="feedback error" role="alert">{{ $message }}</p>
                     @enderror
 
-                    <label for="password" class="field-label">Contrasena</label>
+                    <label for="password" class="field-label">Contraseña</label>
                     <input id="password" name="password" type="password" class="field-input"
-                        placeholder="Ingresa tu contrasena" required>
+                        placeholder="Ingresa tu contraseña" required>
                     @error('password')
                         <p class="feedback error" role="alert">{{ $message }}</p>
                     @enderror
 
                     <div class="form-row">
                         <a href="{{ route('register') }}" class="aux-link">No tengo cuenta</a>
-                        <a href="#" class="aux-link">Olvidé mi contrasena</a>
+                        <a href="#" class="aux-link">Olvidé mi contraseña</a>
                     </div>
 
                     <button type="submit" class="btn-primary">Entrar</button>

@@ -8,8 +8,14 @@ use App\Models\Subtemas;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
+/**
+ * Flujo Estudiante: listado público de recursos educativos publicados.
+ */
 class RecursosController extends Controller
 {
+    /**
+     * Muestra recursos filtrables (solo estado PUBLICADO) para estudiantes.
+     */
     public function index(Request $request): View
     {
         $search = trim((string) $request->input('q', ''));

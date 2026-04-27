@@ -7,7 +7,12 @@ use App\Http\Controllers\Foro\ForoController;
 use App\Http\Controllers\Foro\ModeracionForoController;
 use App\Http\Controllers\Foro\RespuestaForoController;
 use App\Http\Controllers\FlashcardsController;
+use App\Http\Controllers\Moderador\ModeradorFlashcardsController;
+use App\Http\Controllers\Moderador\ModeradorRecursosController;
 use App\Http\Controllers\RecursosController;
+use App\Http\Controllers\Tutor\TutorFlashcardsController;
+use App\Http\Controllers\Tutor\TutorRecursosController;
+use App\Http\Controllers\Tutor\TutorRecursosEducativosController;
 use App\Http\Controllers\Usuarios\ProfileController;
 use App\Http\Controllers\Usuarios\UsuariosController;
 use Illuminate\Support\Facades\Route;
@@ -56,13 +61,12 @@ Route::middleware('auth')->group(function () {
             Route::post('/practice/session/{id}/answer', [\App\Http\Controllers\Estudiante\PracticeController::class, 'saveAnswer'])->name('practice.answer');
             Route::get('/practice/session/{id}/summary', [\App\Http\Controllers\Estudiante\PracticeController::class, 'summary'])->name('practice.summary');
             // Rutas para la página de recursos educativos
+            // Flujo Estudiante: solo consumo de recursos y flashcards publicados.
             Route::get('/resources', [RecursosController::class, 'index'])->name('resources');
             // Rutas para la página de ruta de aprendizaje
             Route::get('/learning-route', fn() => view('estudiante.ruta-aprendizaje'))->name('learning-route');
             // Rutas para la página de simulacros de ejercicios
             Route::get('/mock-exams', fn() => view('estudiante.simulacros'))->name('mock-exams');
-            // Rutas para la página de perfil del estudiante
-            Route::get('/profile', fn() => view('estudiante.perfil'))->name('profile');
             // Rutas para la página de flashcards
             Route::get('/flashcards', [FlashcardsController::class, 'index'])->name('flashcards');
             Route::get('/flashcards/subtema/{subtema}', [FlashcardsController::class, 'subtema'])->name('flashcards.subtema');
@@ -110,8 +114,17 @@ Route::middleware('auth')->group(function () {
             Route::prefix('resources')
                 ->name('resources.')
                 ->group(function () {
+                    // Flujo Tutor: crea/edita contenido y lo envía a revisión.
+                    Route::get('/flashcards', [TutorRecursosEducativosController::class, 'show'])->name('flashcards.show');
+                    Route::post('/recursos', [TutorRecursosController::class, 'store'])->name('recursos.store');
+                    Route::patch('/recursos/{recursoId}', [TutorRecursosController::class, 'update'])->name('recursos.update');
+                    Route::delete('/recursos/{recursoId}', [TutorRecursosController::class, 'destroy'])->name('recursos.destroy');
+                    Route::patch('/recursos/{recursoId}/estado', [TutorRecursosController::class, 'cambiarEstado'])->name('recursos.cambiar-estado');
 
-                    
+                    Route::post('/flashcards', [TutorFlashcardsController::class, 'store'])->name('flashcards.store');
+                    Route::patch('/flashcards/{flashcardId}', [TutorFlashcardsController::class, 'update'])->name('flashcards.update');
+                    Route::delete('/flashcards/{flashcardId}', [TutorFlashcardsController::class, 'destroy'])->name('flashcards.destroy');
+                    Route::patch('/flashcards/{flashcardId}/estado', [TutorFlashcardsController::class, 'cambiarEstado'])->name('flashcards.cambiar-estado');
                 });
         });
 
@@ -159,6 +172,25 @@ Route::middleware('auth')->group(function () {
                 Route::get('/{id}/review', [EjercicioController::class, 'review'])->name('review');
                 Route::patch('/{id}/approve', [EjercicioController::class, 'approve'])->name('approve');
                 Route::patch('/{id}/reject', [EjercicioController::class, 'reject'])->name('reject');
+            });
+
+            Route::prefix('resources')->name('resources.')->group(function () {
+                // Flujo Moderador: lista global y resolución (aprobar/rechazar/eliminar).
+                Route::get('/revisions', [ModeradorRecursosController::class, 'show'])->name('revisions');
+
+                Route::patch('/recursos/{recursoId}/approve', [ModeradorRecursosController::class, 'approve'])
+                    ->name('recursos.approve');
+                Route::patch('/recursos/{recursoId}/reject', [ModeradorRecursosController::class, 'reject'])
+                    ->name('recursos.reject');
+                Route::delete('/recursos/{recursoId}', [ModeradorRecursosController::class, 'destroy'])
+                    ->name('recursos.destroy');
+
+                Route::patch('/flashcards/{flashcardId}/approve', [ModeradorFlashcardsController::class, 'approve'])
+                    ->name('flashcards.approve');
+                Route::patch('/flashcards/{flashcardId}/reject', [ModeradorFlashcardsController::class, 'reject'])
+                    ->name('flashcards.reject');
+                Route::delete('/flashcards/{flashcardId}', [ModeradorFlashcardsController::class, 'destroy'])
+                    ->name('flashcards.destroy');
             });
 
         });

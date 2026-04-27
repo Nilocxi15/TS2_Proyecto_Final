@@ -1,5 +1,6 @@
 @extends('layouts.app')
 
+{{-- Flujo Estudiante: catálogo de recursos publicados con filtros de consulta. --}}
 @section('title', 'Recursos Educativos')
 
 @push('styles')
@@ -31,6 +32,7 @@
             </div>
 
             <div class="filters-card mt-4">
+                {{-- Filtros de búsqueda para explorar recursos sin modificar contenido. --}}
                 <form method="GET" action="{{ route('student.resources') }}" id="filtrosRecursosForm">
                     <div class="row g-3 align-items-end">
                         <div class="col-12 col-lg-4">
@@ -115,6 +117,7 @@
             </div>
 
             @if ($recursos->count() > 0)
+                {{-- Tarjetas de recursos publicados. --}}
                 <div class="row g-4 mt-1">
                     @foreach ($recursos as $recurso)
                         @php
@@ -180,6 +183,7 @@
 @push('scripts')
     <script>
         (function () {
+            // Mantiene subtemas sincronizados con el módulo seleccionado.
             const moduloSelect = document.getElementById('modulo');
             const subtemaSelect = document.getElementById('subtema');
             if (!moduloSelect || !subtemaSelect) {

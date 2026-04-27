@@ -20,10 +20,17 @@ class Flashcards extends Model
         'subtema_id',
         'pregunta',
         'respuesta',
+        'estado',
+        'creado_por',
     ];
 
     public function subtema(): BelongsTo
     {
         return $this->belongsTo(Subtemas::class, 'subtema_id');
+    }
+
+    public function creador(): BelongsTo
+    {
+        return $this->belongsTo(Usuarios::class, 'creado_por');
     }
 }

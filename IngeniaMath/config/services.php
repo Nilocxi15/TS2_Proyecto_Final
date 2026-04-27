@@ -35,4 +35,14 @@ return [
         ],
     ],
 
+    'cloudinary' => [
+        'cloud_name' => env('CLOUDINARY_CLOUD_NAME'),
+        'api_key' => env('CLOUDINARY_API_KEY'),
+        'api_secret' => env('CLOUDINARY_API_SECRET'),
+        'secure' => filter_var(env('CLOUDINARY_SECURE', true), FILTER_VALIDATE_BOOL),
+        'verify_ssl' => filter_var(env('CLOUDINARY_VERIFY_SSL', true), FILTER_VALIDATE_BOOL),
+        'ca_bundle' => env('CLOUDINARY_CA_BUNDLE', ''),
+        'upload_preset' => env('CLOUDINARY_UPLOAD_PRESET'),
+    ],
+
 ];
