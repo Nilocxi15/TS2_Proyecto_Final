@@ -1,0 +1,420 @@
+@extends('layouts.app')
+
+@section('title', 'Crear Nuevo Ejercicio')
+
+@section('content')
+    <div class="page-two-columns">
+        <!-- Columna izquierda: Formulario -->
+        <div class="card">
+            <div class="card-header bg-white border-0 pt-4 pb-0">
+                <h3 class="mb-0">
+                    <i class="fas fa-plus-circle text-primary me-2"></i>Crear Nuevo Ejercicio
+                </h3>
+                <p class="text-muted mt-2">Completa todos los campos para agregar un nuevo ejercicio al banco</p>
+            </div>
+
+            <div class="card-body">
+                <!-- Alertas -->
+                @if (session('warning') && session('duplicados') && session('duplicados')->count() > 0)
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <strong>{{ session('warning') }}</strong>
+                        <hr>
+                        <strong>Ejercicios similares encontrados:</strong>
+                        <ul class="mt-2">
+                            @foreach (session('duplicados') as $duplicado)
+                                <li>
+                                    <a href="{{ route('tutor.exercises.show', $duplicado->id) }}" target="_blank">
+                                        Ejercicio #{{ $duplicado->id }}
+                                    </a>
+                                    <span class="text-muted"> - {{ Str::limit($duplicado->enunciado, 100) }}</span>
+                                </li>
+                            @endforeach
+                        </ul>
+
+                        @if (session('show_force_button'))
+                            <hr>
+                            <div class="d-flex gap-2">
+                                <button type="button" id="btn-force-submit" class="btn btn-warning">
+                                    <i class="fas fa-exclamation-triangle me-1"></i>Crear de todas formas
+                                </button>
+                                <a href="{{ route('tutor.exercises.create') }}" class="btn btn-secondary">
+                                    <i class="fas fa-times me-1"></i>Cancelar y corregir
+                                </a>
+                            </div>
+                        @endif
+
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"
+                            style="position: absolute; right: 1rem; top: 1rem;"></button>
+                    </div>
+                @endif
+
+                @if ($errors->any())
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="fas fa-times-circle me-2"></i>
+                        <strong>Por favor corrige los siguientes errores:</strong>
+                        <ul class="mt-2 mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                @endif
+
+                <form action="{{ route('tutor.exercises.store') }}" method="POST" id="ejercicioForm"
+                    enctype="multipart/form-data">
+                    @csrf
+
+                    <!-- Módulo y Subtema -->
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">
+                                <i class="fas fa-book me-1 text-primary"></i>Módulo *
+                            </label>
+                            <select name="modulo_id" class="form-select @error('modulo_id') is-invalid @enderror"
+                                id="modulo_id" required>
+                                <option value="">Seleccione un módulo</option>
+                                @foreach ($modulos as $modulo)
+                                    <option value="{{ $modulo->id }}"
+                                        {{ old('modulo_id') == $modulo->id ? 'selected' : '' }}>
+                                        {{ $modulo->nombre }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('modulo_id')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">
+                                <i class="fas fa-tag me-1 text-primary"></i>Subtema *
+                            </label>
+                            <select name="subtema_id" id="subtema_id"
+                                class="form-select @error('subtema_id') is-invalid @enderror" required>
+                                <option value="">Primero seleccione un módulo</option>
+                            </select>
+                            @error('subtema_id')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <!-- Dificultad y Tipo -->
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">
+                                <i class="fas fa-chart-line me-1 text-primary"></i>Nivel de Dificultad *
+                            </label>
+                            <select name="dificultad" class="form-select @error('dificultad') is-invalid @enderror"
+                                required>
+                                <option value="">Seleccione dificultad</option>
+                                @foreach ($dificultades as $key => $nombre)
+                                    <option value="{{ $key }}" {{ old('dificultad') == $key ? 'selected' : '' }}>
+                                        {{ $nombre }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('dificultad')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">
+                                <i class="fas fa-question-circle me-1 text-primary"></i>Tipo de Ejercicio *
+                            </label>
+                            <select name="tipo" class="form-select @error('tipo') is-invalid @enderror" required>
+                                <option value="">Seleccione tipo</option>
+                                @foreach ($tipos as $key => $nombre)
+                                    <option value="{{ $key }}" {{ old('tipo') == $key ? 'selected' : '' }}>
+                                        {{ $nombre }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('tipo')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <!-- Enunciado -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">
+                            <i class="fas fa-file-alt me-1 text-primary"></i>Enunciado del Problema *
+                        </label>
+                        <textarea name="enunciado" rows="4" class="form-control math-field @error('enunciado') is-invalid @enderror"
+                            placeholder="Ej: Resuelve la siguiente ecuación: $$x^2 - 5x + 6 = 0$$" required>{{ old('enunciado') }}</textarea>
+                        <small class="text-muted">
+                            <i class="fas fa-info-circle"></i> Puedes usar LaTeX entre $$ $$ para fórmulas matemáticas
+                        </small>
+                        @error('enunciado')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <!-- Previsualización del enunciado -->
+                    <div class="mb-3 math-preview" id="enunciadoPreview" style="display: none;">
+                        <strong>Vista previa:</strong>
+                        <div id="previewContent"></div>
+                    </div>
+
+                    <!-- Imagen (opcional) -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">
+                            <i class="fas fa-image me-1 text-primary"></i>Imagen/Diagrama (opcional)
+                        </label>
+                        <input type="file" name="imagen" class="form-control" accept="image/*">
+                        <small class="text-muted">Sube una imagen (JPG, PNG, GIF, WEBP, máximo 2MB)</small>
+                        @error('imagen')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <!-- Respuesta Correcta -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">
+                            <i class="fas fa-check-circle me-1 text-success"></i>Respuesta Correcta *
+                        </label>
+                        <input type="text" name="respuesta_correcta"
+                            class="form-control @error('respuesta_correcta') is-invalid @enderror"
+                            placeholder="Ej: x = 2, x = 3" value="{{ old('respuesta_correcta') }}" required>
+                        @error('respuesta_correcta')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <!-- Solución Paso a Paso -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">
+                            <i class="fas fa-list-ol me-1 text-primary"></i>Solución Paso a Paso *
+                        </label>
+                        <textarea name="solucion" rows="5" class="form-control math-field @error('solucion') is-invalid @enderror"
+                            placeholder="1. Identificamos que es una ecuación cuadrática&#10;2. Aplicamos la fórmula general...&#10;3. Calculamos las raíces..."
+                            required>{{ old('solucion') }}</textarea>
+                        <small class="text-muted">Explicación detallada de cada paso para resolver el ejercicio</small>
+                        @error('solucion')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <!-- Explicación Conceptual -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">
+                            <i class="fas fa-graduation-cap me-1 text-primary"></i>Explicación Conceptual *
+                        </label>
+                        <textarea name="explicacion" rows="4"
+                            class="form-control math-field @error('explicacion') is-invalid @enderror"
+                            placeholder="Explica la teoría detrás del ejercicio: qué concepto se aplica, por qué funciona, etc." required>{{ old('explicacion') }}</textarea>
+                        <small class="text-muted">Material de apoyo que explica el tema relacionado</small>
+                        @error('explicacion')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <!-- Tiempo Estimado -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">
+                            <i class="fas fa-hourglass-half me-1 text-primary"></i>Tiempo Estimado (minutos) *
+                        </label>
+                        <input type="number" name="tiempo_estimado"
+                            class="form-control @error('tiempo_estimado') is-invalid @enderror" placeholder="5"
+                            min="1" max="30" value="{{ old('tiempo_estimado', 5) }}" required>
+                        @error('tiempo_estimado')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <!-- Ejercicios Relacionados -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">
+                            <i class="fas fa-link me-1 text-primary"></i>Ejercicios Relacionados (opcional)
+                        </label>
+                        <select name="relacionados[]" id="relacionados" class="form-select" multiple size="5">
+                            <option value="">Cargando ejercicios...</option>
+                        </select>
+                        <small class="text-muted">Ctrl+Click para seleccionar múltiples ejercicios relacionados</small>
+                    </div>
+
+                    <!-- Usuario creador (temporal) -->
+                    <input type="hidden" name="creado_por" value="1">
+
+                    <hr class="my-4">
+
+                    <!-- Botones -->
+                    <div class="d-flex justify-content-between">
+                        <a href="{{ route('tutor.exercises.index') }}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>Cancelar
+                        </a>
+                        <button type="submit" class="btn btn-primary" id="submitBtn">
+                            <i class="fas fa-save me-2"></i>Guardar Ejercicio
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Columna derecha: Guía y consejos -->
+        <div class="card">
+            <div class="card-header bg-white border-0 pt-4 pb-0">
+                <h4 class="mb-0">
+                    <i class="fas fa-lightbulb text-warning me-2"></i>Guía Rápida
+                </h4>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <strong>Consejos para crear buenos ejercicios:</strong>
+                </div>
+
+                <h6 class="mt-3"><i class="fas fa-chart-line me-2 text-primary"></i>Niveles de Dificultad</h6>
+                <ul class="text-muted mb-3">
+                    <li><strong>Básico:</strong> Ejercicios simples de un solo paso</li>
+                    <li><strong>Intermedio:</strong> Requiere 2-3 pasos o combinación de conceptos</li>
+                    <li><strong>Avanzado:</strong> Múltiples pasos, requiere análisis profundo</li>
+                    <li><strong>Examen Real:</strong> Mismo nivel que el examen de admisión USAC</li>
+                </ul>
+
+                <h6 class="mt-3"><i class="fas fa-file-alt me-2 text-primary"></i>Tipos de Ejercicio</h6>
+                <ul class="text-muted mb-3">
+                    <li><strong>Opción Múltiple:</strong> Varias opciones, una correcta</li>
+                    <li><strong>Verdadero/Falso:</strong> Afirmación para evaluar</li>
+                    <li><strong>Respuesta Numérica:</strong> Número o expresión exacta</li>
+                    <li><strong>Completar Espacios:</strong> Rellenar espacios en blanco</li>
+                </ul>
+
+                <h6 class="mt-3"><i class="fas fa-code me-2 text-primary"></i>Usando LaTeX</h6>
+                <div class="bg-light p-2 rounded">
+                    <code>$$x^2 + 2x + 1 = 0$$</code> → $$x^2 + 2x + 1 = 0$$<br>
+                    <code>$$\frac{a}{b}$$</code> → $$\frac{a}{b}$$<br>
+                    <code>$$\sqrt{x}$$</code> → $$\sqrt{x}$$
+                </div>
+
+                <div class="alert alert-warning mt-4">
+                    <i class="fas fa-shield-alt me-2"></i>
+                    <strong>Nota:</strong> Los ejercicios se guardan en estado <strong>BORRADOR</strong>.
+                    Deberás enviarlos a revisión para que sean publicados.
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+
+@push('styles')
+    <style>
+        .math-preview {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        select[multiple] {
+            min-height: 150px;
+        }
+    </style>
+@endpush
+
+@push('scripts')
+    <script>
+        // Cargar subtemas según el módulo seleccionado
+        document.getElementById('modulo_id').addEventListener('change', function() {
+            const moduloId = this.value;
+            const subtemaSelect = document.getElementById('subtema_id');
+
+            if (!moduloId) {
+                subtemaSelect.innerHTML = '<option value="">Primero seleccione un módulo</option>';
+                return;
+            }
+
+            // Mostrar loading
+            subtemaSelect.innerHTML = '<option value="">Cargando subtemas...</option>';
+
+            // Obtener subtemas vía AJAX a nuestra propia ruta
+            fetch(`/subtemas/${moduloId}`)
+                .then(response => response.json())
+                .then(data => {
+                    subtemaSelect.innerHTML = '<option value="">Seleccione un subtema</option>';
+                    data.forEach(subtema => {
+                        subtemaSelect.innerHTML +=
+                            `<option value="${subtema.id}">${subtema.nombre}</option>`;
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    subtemaSelect.innerHTML = '<option value="">Error al cargar subtemas</option>';
+                });
+        });
+
+        // Previsualizar enunciado
+        const enunciadoTextarea = document.querySelector('textarea[name="enunciado"]');
+        const previewDiv = document.getElementById('enunciadoPreview');
+        const previewContent = document.getElementById('previewContent');
+
+        enunciadoTextarea.addEventListener('input', function() {
+            const value = this.value;
+            if (value.trim()) {
+                previewDiv.style.display = 'block';
+                previewContent.innerHTML = value;
+                if (window.MathJax) {
+                    MathJax.typesetPromise([previewContent]);
+                }
+            } else {
+                previewDiv.style.display = 'none';
+            }
+        });
+
+        // Disparar evento inicial si hay valor
+        if (enunciadoTextarea.value.trim()) {
+            enunciadoTextarea.dispatchEvent(new Event('input'));
+        }
+
+        // Cargar ejercicios existentes para relacionados
+        function cargarEjerciciosRelacionados() {
+            const relacionadosSelect = document.getElementById('relacionados');
+            fetch('/ejercicios-publicados')
+                .then(response => response.json())
+                .then(data => {
+                    relacionadosSelect.innerHTML = '';
+                    if (data.length === 0) {
+                        relacionadosSelect.innerHTML =
+                            '<option value="">No hay ejercicios publicados disponibles</option>';
+                    } else {
+                        data.forEach(ejercicio => {
+                            relacionadosSelect.innerHTML += `<option value="${ejercicio.id}">
+                                #${ejercicio.id} - ${ejercicio.modulo?.nombre || 'Sin módulo'} - ${ejercicio.enunciado.substring(0, 50)}...
+                            </option>`;
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    relacionadosSelect.innerHTML = '<option value="">Error al cargar ejercicios</option>';
+                });
+        }
+
+        // Cargar ejercicios relacionados al iniciar
+        cargarEjerciciosRelacionados();
+
+        // Si el módulo ya tiene un valor seleccionado (por error de validación), cargar subtemas
+        if (document.getElementById('modulo_id').value) {
+            document.getElementById('modulo_id').dispatchEvent(new Event('change'));
+        }
+
+        // Botón para forzar creación (envía el formulario con force=true)
+        const btnForce = document.getElementById('btn-force-submit');
+        if (btnForce) {
+            btnForce.addEventListener('click', function(e) {
+                e.preventDefault();
+                const form = document.getElementById('ejercicioForm');
+                const inputForce = document.createElement('input');
+                inputForce.type = 'hidden';
+                inputForce.name = 'force';
+                inputForce.value = 'true';
+                form.appendChild(inputForce);
+                form.submit();
+            });
+        }
+    </script>
+@endpush
