@@ -60,7 +60,7 @@
                 </div>
             @endif
 
-            <form action="{{ route('tutor.exercises.update', $ejercicio->id) }}" method="POST" id="ejercicioForm">
+            <form action="{{ route('tutor.exercises.update', $ejercicio->id) }}" method="POST" id="ejercicioForm" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 
@@ -172,9 +172,10 @@
                     <label class="form-label fw-bold">
                         <i class="fas fa-image me-1 text-primary"></i>Imagen/Diagrama (opcional)
                     </label>
-                    <input type="url" name="imagen" class="form-control @error('imagen') is-invalid @enderror"
-                           placeholder="https://ejemplo.com/imagen.jpg" value="{{ old('imagen', $ejercicio->imagen) }}">
-                    <small class="text-muted">URL de una imagen de apoyo para el ejercicio</small>
+
+                    <input type="file" name="imagen" class="form-control" accept="image/*">
+                    
+                    <small class="text-muted">Sube una imagen de apoyo para el ejercicio</small>
                     @error('imagen')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror

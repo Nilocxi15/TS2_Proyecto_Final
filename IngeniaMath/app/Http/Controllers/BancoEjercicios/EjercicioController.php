@@ -10,9 +10,17 @@ use App\Models\Usuarios;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Enums\RolEnum;
+use App\Services\ToCloudinaryService;
 
 class EjercicioController extends Controller
 {
+    protected $cloudinary;
+
+    public function __construct(ToCloudinaryService $cloudinary)
+    {
+        $this->cloudinary = $cloudinary;
+    }
+
     // Listar ejercicios con filtros
     public function index(Request $request)
     {
@@ -87,6 +95,7 @@ class EjercicioController extends Controller
         $force = $request->has('force') && $request->force == 'true';
 
         if (!$force) {
+            // Validación completa para casos normales
             $validated = $this->validateEjercicio($request);
 
             // Detectar duplicados
@@ -100,18 +109,38 @@ class EjercicioController extends Controller
                     ->with('show_force_button', true);
             }
         } else {
-            $validated = $this->validateEjercicio($request);
+            // Validación simple para el modo forzado (imagen opcional)
+            $validated = $request->validate([
+                'modulo_id' => 'required|exists:modulos,id',
+                'subtema_id' => 'required|exists:subtemas,id',
+                'dificultad' => 'required|in:BASICO,INTERMEDIO,AVANZADO,EXAMEN',
+                'tipo' => 'required|in:OPCION_MULTIPLE,VF,NUMERICO,COMPLETAR',
+                'enunciado' => 'required|string|min:10',
+                'imagen' => 'nullable',
+                'respuesta_correcta' => 'required|string',
+                'solucion' => 'required|string|min:20',
+                'explicacion' => 'required|string|min:20',
+                'tiempo_estimado' => 'required|integer|min:1|max:30',
+                'relacionados' => 'nullable|array',
+                'relacionados.*' => 'exists:ejercicios,id',
+            ]);
         }
 
         DB::beginTransaction();
         try {
+            // Procesar imagen solo en modo normal (no forzado)
+            $imagenUrl = null;
+            if (!$force && $request->hasFile('imagen')) {
+                $imagenUrl = $this->cloudinary->subirImagen($request->file('imagen'));
+            }
+
             $ejercicio = Ejercicios::create([
                 'modulo_id' => $request->modulo_id,
                 'subtema_id' => $request->subtema_id,
                 'dificultad' => $request->dificultad,
                 'tipo' => $request->tipo,
                 'enunciado' => $request->enunciado,
-                'imagen' => $request->imagen,
+                'imagen' => $imagenUrl,
                 'respuesta_correcta' => $request->respuesta_correcta,
                 'solucion' => $request->solucion,
                 'explicacion' => $request->explicacion,
@@ -135,6 +164,7 @@ class EjercicioController extends Controller
 
         } catch (\Exception $e) {
             DB::rollBack();
+            \Log::error('Error general en store: ' . $e->getMessage());
             return back()->with('error', 'Error al guardar: ' . $e->getMessage());
         }
     }
@@ -206,6 +236,7 @@ class EjercicioController extends Controller
     }
 
     // Actualizar ejercicio
+    // Actualizar ejercicio - CON CLOUDINARY
     public function update(Request $request, $id)
     {
         $ejercicio = Ejercicios::findOrFail($id);
@@ -219,13 +250,25 @@ class EjercicioController extends Controller
 
         DB::beginTransaction();
         try {
+            // Mantener la imagen actual por defecto
+            $imagenUrl = $ejercicio->imagen;
+
+            // Si se subió una nueva imagen
+            if ($request->hasFile('imagen')) {
+                // Eliminar imagen anterior si existe y está en Cloudinary
+                if ($ejercicio->imagen && str_contains($ejercicio->imagen, 'cloudinary')) {
+                    $this->cloudinary->eliminarImagen($ejercicio->imagen);
+                }
+                $imagenUrl = $this->cloudinary->subirImagen($request->file('imagen'));
+            }
+
             $ejercicio->update([
                 'modulo_id' => $request->modulo_id,
                 'subtema_id' => $request->subtema_id,
                 'dificultad' => $request->dificultad,
                 'tipo' => $request->tipo,
                 'enunciado' => $request->enunciado,
-                'imagen' => $request->imagen,
+                'imagen' => $imagenUrl,
                 'respuesta_correcta' => $request->respuesta_correcta,
                 'solucion' => $request->solucion,
                 'explicacion' => $request->explicacion,
@@ -362,7 +405,7 @@ class EjercicioController extends Controller
             'dificultad' => 'required|in:BASICO,INTERMEDIO,AVANZADO,EXAMEN',
             'tipo' => 'required|in:OPCION_MULTIPLE,VF,NUMERICO,COMPLETAR',
             'enunciado' => 'required|string|min:10',
-            'imagen' => 'nullable|url',
+            'imagen' => 'nullable|file|image|mimes:jpg,jpeg,png,gif,webp|max:2048',
             'respuesta_correcta' => 'required|string',
             'solucion' => 'required|string|min:20',
             'explicacion' => 'required|string|min:20',

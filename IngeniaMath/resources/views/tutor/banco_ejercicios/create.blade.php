@@ -15,14 +15,14 @@
 
             <div class="card-body">
                 <!-- Alertas -->
-                @if(session('warning') && session('duplicados') && session('duplicados')->count() > 0)
+                @if (session('warning') && session('duplicados') && session('duplicados')->count() > 0)
                     <div class="alert alert-warning alert-dismissible fade show" role="alert">
                         <i class="fas fa-exclamation-triangle me-2"></i>
                         <strong>{{ session('warning') }}</strong>
                         <hr>
                         <strong>Ejercicios similares encontrados:</strong>
                         <ul class="mt-2">
-                            @foreach(session('duplicados') as $duplicado)
+                            @foreach (session('duplicados') as $duplicado)
                                 <li>
                                     <a href="{{ route('tutor.exercises.show', $duplicado->id) }}" target="_blank">
                                         Ejercicio #{{ $duplicado->id }}
@@ -32,46 +32,29 @@
                             @endforeach
                         </ul>
 
-                        @if(session('show_force_button'))
+                        @if (session('show_force_button'))
                             <hr>
-                            <form action="{{ route('tutor.exercises.store') }}" method="POST" class="mt-2">
-                                @csrf
-
-                                <!-- Ocultar todos los campos del formulario original -->
-                                <input type="hidden" name="modulo_id" value="{{ old('modulo_id') }}">
-                                <input type="hidden" name="subtema_id" value="{{ old('subtema_id') }}">
-                                <input type="hidden" name="dificultad" value="{{ old('dificultad') }}">
-                                <input type="hidden" name="tipo" value="{{ old('tipo') }}">
-                                <input type="hidden" name="enunciado" value="{{ old('enunciado') }}">
-                                <input type="hidden" name="imagen" value="{{ old('imagen') }}">
-                                <input type="hidden" name="respuesta_correcta" value="{{ old('respuesta_correcta') }}">
-                                <input type="hidden" name="solucion" value="{{ old('solucion') }}">
-                                <input type="hidden" name="explicacion" value="{{ old('explicacion') }}">
-                                <input type="hidden" name="tiempo_estimado" value="{{ old('tiempo_estimado') }}">
-                                <input type="hidden" name="creado_por" value="{{ old('creado_por', 1) }}">
-                                <input type="hidden" name="force" value="true">
-
-                                <div class="d-flex gap-2">
-                                    <button type="submit" class="btn btn-warning">
-                                        <i class="fas fa-exclamation-triangle me-1"></i>Crear de todas formas
-                                    </button>
-                                    <a href="{{ route('tutor.exercises.create') }}" class="btn btn-secondary">
-                                        <i class="fas fa-times me-1"></i>Cancelar y corregir
-                                    </a>
-                                </div>
-                            </form>
+                            <div class="d-flex gap-2">
+                                <button type="button" id="btn-force-submit" class="btn btn-warning">
+                                    <i class="fas fa-exclamation-triangle me-1"></i>Crear de todas formas
+                                </button>
+                                <a href="{{ route('tutor.exercises.create') }}" class="btn btn-secondary">
+                                    <i class="fas fa-times me-1"></i>Cancelar y corregir
+                                </a>
+                            </div>
                         @endif
 
                         <button type="button" class="btn-close" data-bs-dismiss="alert"
                             style="position: absolute; right: 1rem; top: 1rem;"></button>
                     </div>
                 @endif
-                @if($errors->any())
+
+                @if ($errors->any())
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                         <i class="fas fa-times-circle me-2"></i>
                         <strong>Por favor corrige los siguientes errores:</strong>
                         <ul class="mt-2 mb-0">
-                            @foreach($errors->all() as $error)
+                            @foreach ($errors->all() as $error)
                                 <li>{{ $error }}</li>
                             @endforeach
                         </ul>
@@ -79,7 +62,8 @@
                     </div>
                 @endif
 
-                <form action="{{ route('tutor.exercises.store') }}" method="POST" id="ejercicioForm">
+                <form action="{{ route('tutor.exercises.store') }}" method="POST" id="ejercicioForm"
+                    enctype="multipart/form-data">
                     @csrf
 
                     <!-- Módulo y Subtema -->
@@ -91,8 +75,9 @@
                             <select name="modulo_id" class="form-select @error('modulo_id') is-invalid @enderror"
                                 id="modulo_id" required>
                                 <option value="">Seleccione un módulo</option>
-                                @foreach($modulos as $modulo)
-                                    <option value="{{ $modulo->id }}" {{ old('modulo_id') == $modulo->id ? 'selected' : '' }}>
+                                @foreach ($modulos as $modulo)
+                                    <option value="{{ $modulo->id }}"
+                                        {{ old('modulo_id') == $modulo->id ? 'selected' : '' }}>
                                         {{ $modulo->nombre }}
                                     </option>
                                 @endforeach
@@ -125,7 +110,7 @@
                             <select name="dificultad" class="form-select @error('dificultad') is-invalid @enderror"
                                 required>
                                 <option value="">Seleccione dificultad</option>
-                                @foreach($dificultades as $key => $nombre)
+                                @foreach ($dificultades as $key => $nombre)
                                     <option value="{{ $key }}" {{ old('dificultad') == $key ? 'selected' : '' }}>
                                         {{ $nombre }}
                                     </option>
@@ -142,7 +127,7 @@
                             </label>
                             <select name="tipo" class="form-select @error('tipo') is-invalid @enderror" required>
                                 <option value="">Seleccione tipo</option>
-                                @foreach($tipos as $key => $nombre)
+                                @foreach ($tipos as $key => $nombre)
                                     <option value="{{ $key }}" {{ old('tipo') == $key ? 'selected' : '' }}>
                                         {{ $nombre }}
                                     </option>
@@ -159,10 +144,8 @@
                         <label class="form-label fw-bold">
                             <i class="fas fa-file-alt me-1 text-primary"></i>Enunciado del Problema *
                         </label>
-                        <textarea name="enunciado" rows="4"
-                            class="form-control math-field @error('enunciado') is-invalid @enderror"
-                            placeholder="Ej: Resuelve la siguiente ecuación: $$x^2 - 5x + 6 = 0$$"
-                            required>{{ old('enunciado') }}</textarea>
+                        <textarea name="enunciado" rows="4" class="form-control math-field @error('enunciado') is-invalid @enderror"
+                            placeholder="Ej: Resuelve la siguiente ecuación: $$x^2 - 5x + 6 = 0$$" required>{{ old('enunciado') }}</textarea>
                         <small class="text-muted">
                             <i class="fas fa-info-circle"></i> Puedes usar LaTeX entre $$ $$ para fórmulas matemáticas
                         </small>
@@ -182,9 +165,8 @@
                         <label class="form-label fw-bold">
                             <i class="fas fa-image me-1 text-primary"></i>Imagen/Diagrama (opcional)
                         </label>
-                        <input type="url" name="imagen" class="form-control @error('imagen') is-invalid @enderror"
-                            placeholder="https://ejemplo.com/imagen.jpg" value="{{ old('imagen') }}">
-                        <small class="text-muted">URL de una imagen de apoyo para el ejercicio</small>
+                        <input type="file" name="imagen" class="form-control" accept="image/*">
+                        <small class="text-muted">Sube una imagen (JPG, PNG, GIF, WEBP, máximo 2MB)</small>
                         @error('imagen')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -208,8 +190,7 @@
                         <label class="form-label fw-bold">
                             <i class="fas fa-list-ol me-1 text-primary"></i>Solución Paso a Paso *
                         </label>
-                        <textarea name="solucion" rows="5"
-                            class="form-control math-field @error('solucion') is-invalid @enderror"
+                        <textarea name="solucion" rows="5" class="form-control math-field @error('solucion') is-invalid @enderror"
                             placeholder="1. Identificamos que es una ecuación cuadrática&#10;2. Aplicamos la fórmula general...&#10;3. Calculamos las raíces..."
                             required>{{ old('solucion') }}</textarea>
                         <small class="text-muted">Explicación detallada de cada paso para resolver el ejercicio</small>
@@ -225,8 +206,7 @@
                         </label>
                         <textarea name="explicacion" rows="4"
                             class="form-control math-field @error('explicacion') is-invalid @enderror"
-                            placeholder="Explica la teoría detrás del ejercicio: qué concepto se aplica, por qué funciona, etc."
-                            required>{{ old('explicacion') }}</textarea>
+                            placeholder="Explica la teoría detrás del ejercicio: qué concepto se aplica, por qué funciona, etc." required>{{ old('explicacion') }}</textarea>
                         <small class="text-muted">Material de apoyo que explica el tema relacionado</small>
                         @error('explicacion')
                             <div class="invalid-feedback">{{ $message }}</div>
@@ -239,8 +219,8 @@
                             <i class="fas fa-hourglass-half me-1 text-primary"></i>Tiempo Estimado (minutos) *
                         </label>
                         <input type="number" name="tiempo_estimado"
-                            class="form-control @error('tiempo_estimado') is-invalid @enderror" placeholder="5" min="1"
-                            max="30" value="{{ old('tiempo_estimado', 5) }}" required>
+                            class="form-control @error('tiempo_estimado') is-invalid @enderror" placeholder="5"
+                            min="1" max="30" value="{{ old('tiempo_estimado', 5) }}" required>
                         @error('tiempo_estimado')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -339,7 +319,7 @@
 @push('scripts')
     <script>
         // Cargar subtemas según el módulo seleccionado
-        document.getElementById('modulo_id').addEventListener('change', function () {
+        document.getElementById('modulo_id').addEventListener('change', function() {
             const moduloId = this.value;
             const subtemaSelect = document.getElementById('subtema_id');
 
@@ -357,7 +337,8 @@
                 .then(data => {
                     subtemaSelect.innerHTML = '<option value="">Seleccione un subtema</option>';
                     data.forEach(subtema => {
-                        subtemaSelect.innerHTML += `<option value="${subtema.id}">${subtema.nombre}</option>`;
+                        subtemaSelect.innerHTML +=
+                            `<option value="${subtema.id}">${subtema.nombre}</option>`;
                     });
                 })
                 .catch(error => {
@@ -371,7 +352,7 @@
         const previewDiv = document.getElementById('enunciadoPreview');
         const previewContent = document.getElementById('previewContent');
 
-        enunciadoTextarea.addEventListener('input', function () {
+        enunciadoTextarea.addEventListener('input', function() {
             const value = this.value;
             if (value.trim()) {
                 previewDiv.style.display = 'block';
@@ -397,7 +378,8 @@
                 .then(data => {
                     relacionadosSelect.innerHTML = '';
                     if (data.length === 0) {
-                        relacionadosSelect.innerHTML = '<option value="">No hay ejercicios publicados disponibles</option>';
+                        relacionadosSelect.innerHTML =
+                            '<option value="">No hay ejercicios publicados disponibles</option>';
                     } else {
                         data.forEach(ejercicio => {
                             relacionadosSelect.innerHTML += `<option value="${ejercicio.id}">
@@ -418,6 +400,21 @@
         // Si el módulo ya tiene un valor seleccionado (por error de validación), cargar subtemas
         if (document.getElementById('modulo_id').value) {
             document.getElementById('modulo_id').dispatchEvent(new Event('change'));
+        }
+
+        // Botón para forzar creación (envía el formulario con force=true)
+        const btnForce = document.getElementById('btn-force-submit');
+        if (btnForce) {
+            btnForce.addEventListener('click', function(e) {
+                e.preventDefault();
+                const form = document.getElementById('ejercicioForm');
+                const inputForce = document.createElement('input');
+                inputForce.type = 'hidden';
+                inputForce.name = 'force';
+                inputForce.value = 'true';
+                form.appendChild(inputForce);
+                form.submit();
+            });
         }
     </script>
 @endpush
