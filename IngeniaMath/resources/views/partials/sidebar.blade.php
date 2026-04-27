@@ -114,6 +114,12 @@
                 </a>
             </li>
 
+            <li>
+                <a href="{{ route('admin.settings.index') }}" class="nav-link">
+                    <i class="fas fa-cog"></i> Configuraciones
+                </a>
+            </li>
+
         @endif
 
 

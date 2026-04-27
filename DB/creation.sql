@@ -141,6 +141,7 @@ CREATE TABLE simulacros (
 CREATE TABLE simulacro_preguntas (
     simulacro_id INT REFERENCES simulacros(id),
     ejercicio_id INT REFERENCES ejercicios(id),
+    respuesta TEXT,
     es_correcta BOOLEAN,
     PRIMARY KEY (simulacro_id, ejercicio_id)
 );
@@ -190,5 +191,16 @@ CREATE TABLE respuestas_post (
 -- Rendimiento para Respuestas Usuario
 CREATE INDEX idx_respuestas_usuario_usuario ON respuestas_usuario(usuario_id);
 CREATE INDEX idx_respuestas_usuario_ejercicio ON respuestas_usuario(ejercicio_id);
+
+-- Configuraciones Globales
+CREATE TABLE configuraciones (
+    clave VARCHAR(50) PRIMARY KEY,
+    valor TEXT NOT NULL,
+    descripcion TEXT
+);
+
+INSERT INTO configuraciones (clave, valor, descripcion) VALUES 
+('simulacro_duracion_minutos', '90', 'Duración por defecto de los simulacros en minutos'),
+('simulacro_total_preguntas', '35', 'Cantidad total de preguntas por simulacro');
 
 COMMIT;
