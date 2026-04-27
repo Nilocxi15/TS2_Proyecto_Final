@@ -41,6 +41,12 @@
             </li>
 
             <li>
+                <a href="{{ route('student.study-plan.index') }}" class="nav-link">
+                    <i class="bi bi-calendar"></i> Plan de estudio
+                </a>
+            </li>
+
+            <li>
                 <a href="{{ route('student.mock-exams') }}" class="nav-link">
                     <i class="bi bi-clipboard"></i> Simulacros de Exámenes
                 </a>

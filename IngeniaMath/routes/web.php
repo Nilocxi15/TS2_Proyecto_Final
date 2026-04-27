@@ -3,6 +3,9 @@
 use App\Enums\RolEnum;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\BancoEjercicios\EjercicioController;
+use App\Http\Controllers\DiagnosticoUsuario\DiagnosticoController;
+use App\Http\Controllers\DiagnosticoUsuario\PlanEstudioController;
+use App\Http\Controllers\DiagnosticoUsuario\RutaController;
 use App\Http\Controllers\Foro\ForoController;
 use App\Http\Controllers\Foro\ModeracionForoController;
 use App\Http\Controllers\Foro\RespuestaForoController;
@@ -52,7 +55,19 @@ Route::middleware('auth')->group(function () {
                 ->name('dashboard');
 
             // Rutas para la página de diagnostico
-            Route::get('/diagnostic', fn() => view('estudiante.diagnostico'))->name('diagnostic');
+            Route::prefix('diagnostic')->name('diagnostic.')->group(function () {
+
+                Route::get('/', [DiagnosticoController::class,'index'])->name('index');
+
+                Route::post('/start', [DiagnosticoController::class,'start'])->name('start');
+
+                Route::get('/session/{id}', [DiagnosticoController::class,'session'])->name('session');
+
+                Route::post('/session/{id}/answer', [DiagnosticoController::class,'answer'])->name('answer');
+
+                Route::get('/summary/{id}', [DiagnosticoController::class,'summary'])->name('summary');
+
+            });
             // Rutas para la página de practica de ejercicios
             Route::get('/practice', [\App\Http\Controllers\Estudiante\PracticeController::class, 'index'])->name('practice');
             Route::post('/practice/start-free', [\App\Http\Controllers\Estudiante\PracticeController::class, 'startFree'])->name('practice.start-free');
@@ -64,8 +79,16 @@ Route::middleware('auth')->group(function () {
             // Flujo Estudiante: solo consumo de recursos y flashcards publicados.
             Route::get('/resources', [RecursosController::class, 'index'])->name('resources');
             // Rutas para la página de ruta de aprendizaje
-            Route::get('/learning-route', fn() => view('estudiante.ruta-aprendizaje'))->name('learning-route');
-            // Rutas para la página de simulacros de ejercicios
+            Route::get('/learning-route', [RutaController::class, 'index'])->name('learning-route');
+            Route::prefix('study-plan')->name('study-plan.')->group(function () {
+
+                Route::get('/', [PlanEstudioController::class,'index'])
+                    ->name('index');
+
+                Route::post('/save-hours', [PlanEstudioController::class,'saveHours'])
+                    ->name('save-hours');
+
+            });
             Route::get('/mock-exams', fn() => view('estudiante.simulacros'))->name('mock-exams');
             // Rutas para la página de flashcards
             Route::get('/flashcards', [FlashcardsController::class, 'index'])->name('flashcards');
@@ -109,7 +132,7 @@ Route::middleware('auth')->group(function () {
             /*
             |--------------------------------------------------------------------------
             | Recursos Educativos - Módulo 5
-            |--------------------------------------------------------------------------        
+            |--------------------------------------------------------------------------
             */
             Route::prefix('resources')
                 ->name('resources.')
@@ -120,6 +143,7 @@ Route::middleware('auth')->group(function () {
                     Route::patch('/recursos/{recursoId}', [TutorRecursosController::class, 'update'])->name('recursos.update');
                     Route::delete('/recursos/{recursoId}', [TutorRecursosController::class, 'destroy'])->name('recursos.destroy');
                     Route::patch('/recursos/{recursoId}/estado', [TutorRecursosController::class, 'cambiarEstado'])->name('recursos.cambiar-estado');
+
 
                     Route::post('/flashcards', [TutorFlashcardsController::class, 'store'])->name('flashcards.store');
                     Route::patch('/flashcards/{flashcardId}', [TutorFlashcardsController::class, 'update'])->name('flashcards.update');
@@ -254,7 +278,7 @@ Route::middleware('auth')->group(function () {
             ->middleware('role:' . RolEnum::REVISOR->value)
             ->name('delete-answer');
     });
-    
+
     // logout
     // Rutas para la página de perfil
     Route::get('/profile', fn() => view('dashboards.perfil'))->name('profile');
