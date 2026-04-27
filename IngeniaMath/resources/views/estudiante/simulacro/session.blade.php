@@ -35,6 +35,8 @@
 @endsection
 
 @push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" id="MathJax-script" async></script>
+
 <script>
     console.log('Script cargado correctamente');
 
@@ -62,6 +64,12 @@
         }, 1000);
     }
 
+    function renderizarLatex() {
+        if (window.MathJax) {
+            MathJax.typesetPromise().catch(err => console.log('MathJax error:', err));
+        }
+    }
+
     if (ejercicios && ejercicios.length > 0) {
         mostrarEjercicio(0);
     } else {
@@ -73,7 +81,7 @@
         document.getElementById('ejercicio-container').innerHTML = `
             <span class="badge bg-secondary">${ej.modulo} - ${ej.subtema}</span>
             <h5 class="mt-2">Pregunta ${index + 1} de ${ejercicios.length}</h5>
-            <p class="fw-bold">${ej.enunciado}</p>
+            <div class="fw-bold math-preview">${ej.enunciado}</div>
         `;
 
         const inputArea = document.getElementById('input-area');
@@ -87,6 +95,9 @@
 
         document.getElementById('feedback').innerHTML = '';
         document.getElementById('progressBar').style.width = `${(index / ejercicios.length) * 100}%`;
+
+        // Renderizar LaTeX después de actualizar el DOM
+        setTimeout(() => renderizarLatex(), 50);
     }
 
     document.getElementById('btn-comprobar').onclick = async function () {
