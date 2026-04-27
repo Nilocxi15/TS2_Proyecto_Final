@@ -3,6 +3,9 @@
 use App\Enums\RolEnum;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\BancoEjercicios\EjercicioController;
+use App\Http\Controllers\Dashboards\AdminDashboardController;
+use App\Http\Controllers\Dashboards\StudentDashboardController;
+use App\Http\Controllers\Dashboards\TutorDashboardController;
 use App\Http\Controllers\DiagnosticoUsuario\DiagnosticoController;
 use App\Http\Controllers\DiagnosticoUsuario\PlanEstudioController;
 use App\Http\Controllers\DiagnosticoUsuario\RutaController;
@@ -51,7 +54,7 @@ Route::middleware('auth')->group(function () {
         ->name('student.')
         ->group(function () {
 
-            Route::get('/dashboard', fn() => view('dashboards.estudiante'))
+            Route::get('/dashboard', [StudentDashboardController::class, 'index'])
                 ->name('dashboard');
 
             // Rutas para la página de diagnostico
@@ -106,7 +109,7 @@ Route::middleware('auth')->group(function () {
         ->name('tutor.')
         ->group(function () {
 
-            Route::get('/dashboard', fn() => view('dashboards.tutor'))
+            Route::get('/dashboard', [TutorDashboardController::class, 'index'])
                 ->name('dashboard');
 
             /*
@@ -162,7 +165,7 @@ Route::middleware('auth')->group(function () {
         ->name('admin.')
         ->group(function () {
 
-            Route::get('/dashboard', fn() => view('dashboards.admin'))
+            Route::get('/dashboard', [AdminDashboardController::class, 'index'])
                 ->name('dashboard');
 
             // Usuarios
