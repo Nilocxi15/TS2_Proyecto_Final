@@ -54,7 +54,12 @@ Route::middleware('auth')->group(function () {
             // Rutas para la página de diagnostico
             Route::get('/diagnostic', fn() => view('estudiante.diagnostico'))->name('diagnostic');
             // Rutas para la página de practica de ejercicios
-            Route::get('/practice', fn() => view('estudiante.practica'))->name('practice');
+            Route::get('/practice', [\App\Http\Controllers\Estudiante\PracticeController::class, 'index'])->name('practice');
+            Route::post('/practice/start-free', [\App\Http\Controllers\Estudiante\PracticeController::class, 'startFree'])->name('practice.start-free');
+            Route::post('/practice/start-guided', [\App\Http\Controllers\Estudiante\PracticeController::class, 'startGuided'])->name('practice.start-guided');
+            Route::get('/practice/session/{id}', [\App\Http\Controllers\Estudiante\PracticeController::class, 'session'])->name('practice.session');
+            Route::post('/practice/session/{id}/answer', [\App\Http\Controllers\Estudiante\PracticeController::class, 'saveAnswer'])->name('practice.answer');
+            Route::get('/practice/session/{id}/summary', [\App\Http\Controllers\Estudiante\PracticeController::class, 'summary'])->name('practice.summary');
             // Rutas para la página de recursos educativos
             // Flujo Estudiante: solo consumo de recursos y flashcards publicados.
             Route::get('/resources', [RecursosController::class, 'index'])->name('resources');
@@ -93,13 +98,13 @@ Route::middleware('auth')->group(function () {
                     Route::get('/', [EjercicioController::class, 'index'])->name('index');
                     Route::get('/create', [EjercicioController::class, 'create'])->name('create');
                     Route::post('/', [EjercicioController::class, 'store'])->name('store');
-                    Route::get('/{id}', [EjercicioController::class, 'show'])->name('show');
                     Route::get('/{id}/edit', [EjercicioController::class, 'edit'])->name('edit');
                     Route::put('/{id}', [EjercicioController::class, 'update'])->name('update');
                     Route::patch('/{id}/estado', [EjercicioController::class, 'cambiarEstado'])->name('cambiar-estado');
                     Route::delete('/{id}', [EjercicioController::class, 'destroy'])->name('destroy');
 
                 });
+
 
             /*
             |--------------------------------------------------------------------------
@@ -122,7 +127,6 @@ Route::middleware('auth')->group(function () {
                     Route::patch('/flashcards/{flashcardId}/estado', [TutorFlashcardsController::class, 'cambiarEstado'])->name('flashcards.cambiar-estado');
                 });
         });
-
 
     /*
     |--------------------------------------------------------------------------
@@ -193,6 +197,15 @@ Route::middleware('auth')->group(function () {
 
     /*
     |--------------------------------------------------------------------------
+    | RUTAS COMPARTIDAS (Tutor y Revisor)
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/exercises/{id}', [EjercicioController::class, 'show'])
+        ->middleware('role:' . RolEnum::TUTOR->value . ',' . RolEnum::REVISOR->value)
+        ->name('tutor.exercises.show');
+
+    /*
+    |--------------------------------------------------------------------------
     | Privada pero no depende de un Rol
     |--------------------------------------------------------------------------
     */
@@ -241,6 +254,7 @@ Route::middleware('auth')->group(function () {
             ->middleware('role:' . RolEnum::REVISOR->value)
             ->name('delete-answer');
     });
+    
     // logout
     // Rutas para la página de perfil
     Route::get('/profile', fn() => view('dashboards.perfil'))->name('profile');
