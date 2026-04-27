@@ -6,10 +6,15 @@ use App\Models\Flashcards;
 use App\Models\Modulos;
 use App\Models\Subtemas;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Pagination\LengthAwarePaginator;
 
+/**
+ * Servicio de lectura para flashcards visibles al estudiante.
+ */
 class FlashcardsServices
 {
+	/**
+	 * Retorna módulos con subtemas que tengan flashcards PUBLICADAS.
+	 */
 	public function obtenerGaleria(?int $moduloId = null): Collection
 	{
 		return Modulos::query()
@@ -18,33 +23,44 @@ class FlashcardsServices
 			})
 			->with([
 				'subtemas' => function ($query): void {
-					$query->whereHas('flashcards')
+					$query->whereHas('flashcards', function ($flashcardsQuery): void {
+						$flashcardsQuery->where('estado', 'PUBLICADO');
+					})
 						->orderBy('nombre')
 						->with([
 							'flashcards' => function ($flashcardsQuery): void {
-								$flashcardsQuery->orderBy('id');
+								$flashcardsQuery->where('estado', 'PUBLICADO')
+									->orderBy('id');
 							},
 						]);
 				},
 			])
-			->whereHas('subtemas.flashcards')
+			->whereHas('subtemas.flashcards', function ($flashcardsQuery): void {
+				$flashcardsQuery->where('estado', 'PUBLICADO');
+			})
 			->orderBy('nombre')
 			->get();
 	}
 
+	/**
+	 * Construye el detalle de un subtema con paginación para la vista estudiante.
+	 */
 	public function obtenerSubtemaDetalle(Subtemas $subtema, int $perPage = 8): array
 	{
 		$subtema->loadMissing('modulo');
 
 		$flashcards = Flashcards::query()
 			->where('subtema_id', $subtema->id)
+			->where('estado', 'PUBLICADO')
 			->orderBy('id')
 			->paginate($perPage)
 			->withQueryString();
 
 		$subtemasDelModulo = Subtemas::query()
 			->where('modulo_id', $subtema->modulo_id)
-			->whereHas('flashcards')
+			->whereHas('flashcards', function ($flashcardsQuery): void {
+				$flashcardsQuery->where('estado', 'PUBLICADO');
+			})
 			->orderBy('nombre')
 			->get(['id', 'nombre', 'modulo_id']);
 

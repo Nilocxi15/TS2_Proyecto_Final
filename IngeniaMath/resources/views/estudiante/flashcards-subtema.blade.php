@@ -1,5 +1,6 @@
 @extends('layouts.app')
 
+{{-- Flujo Estudiante: detalle de flashcards por subtema con paginación. --}}
 @section('title', 'Flashcards por subtema')
 
 @push('styles')
@@ -49,6 +50,7 @@
             </div>
 
             <div class="subtopic-nav mt-4">
+                {{-- Navegación lateral entre subtemas del mismo módulo. --}}
                 @foreach ($subtemasDelModulo as $otroSubtema)
                     <a href="{{ route('student.flashcards.subtema', $otroSubtema) }}" class="subtopic-pill @if($otroSubtema->id === $subtema->id) active @endif">
                         {{ $otroSubtema->nombre }}
@@ -98,6 +100,7 @@
     @push('scripts')
         <script>
             (function () {
+                // Voltea la tarjeta principal en cada clic.
                 const toggles = document.querySelectorAll('[data-flashcard-toggle]');
 
                 toggles.forEach((toggle) => {
