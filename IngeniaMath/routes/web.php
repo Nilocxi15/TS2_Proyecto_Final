@@ -46,7 +46,12 @@ Route::middleware('auth')->group(function () {
             // Rutas para la página de foro
             Route::get('/forum', fn() => view('estudiante.foro'))->name('forum');
             // Rutas para la página de practica de ejercicios
-            Route::get('/practice', fn() => view('estudiante.practica'))->name('practice');
+            Route::get('/practice', [\App\Http\Controllers\Estudiante\PracticeController::class, 'index'])->name('practice');
+            Route::post('/practice/start-free', [\App\Http\Controllers\Estudiante\PracticeController::class, 'startFree'])->name('practice.start-free');
+            Route::post('/practice/start-guided', [\App\Http\Controllers\Estudiante\PracticeController::class, 'startGuided'])->name('practice.start-guided');
+            Route::get('/practice/session/{id}', [\App\Http\Controllers\Estudiante\PracticeController::class, 'session'])->name('practice.session');
+            Route::post('/practice/session/{id}/answer', [\App\Http\Controllers\Estudiante\PracticeController::class, 'saveAnswer'])->name('practice.answer');
+            Route::get('/practice/session/{id}/summary', [\App\Http\Controllers\Estudiante\PracticeController::class, 'summary'])->name('practice.summary');
             // Rutas para la página de recursos educativos
             Route::get('/resources', [RecursosController::class, 'index'])->name('resources');
             // Rutas para la página de ruta de aprendizaje
