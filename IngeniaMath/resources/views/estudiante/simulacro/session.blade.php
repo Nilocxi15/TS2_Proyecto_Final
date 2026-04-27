@@ -78,11 +78,24 @@
 
     function mostrarEjercicio(index) {
         const ej = ejercicios[index];
+
+        let imagenHtml = '';
+        if (ej.imagen && ej.imagen.trim() !== '') {
+            let imagenUrl = ej.imagen;
+            if (!imagenUrl.startsWith('http://') && !imagenUrl.startsWith('https://')) {
+                imagenUrl = '/storage/' + imagenUrl;
+            }
+            imagenHtml = `<div class="text-center my-3">
+            <img src="${imagenUrl}" class="img-fluid rounded" style="max-height: 200px; border: 1px solid #ddd;">
+        </div>`;
+        }
+
         document.getElementById('ejercicio-container').innerHTML = `
-            <span class="badge bg-secondary">${ej.modulo} - ${ej.subtema}</span>
-            <h5 class="mt-2">Pregunta ${index + 1} de ${ejercicios.length}</h5>
-            <div class="fw-bold math-preview">${ej.enunciado}</div>
-        `;
+        <span class="badge bg-secondary">${ej.modulo} - ${ej.subtema}</span>
+        <h5 class="mt-2">Pregunta ${index + 1} de ${ejercicios.length}</h5>
+        <div class="fw-bold math-preview">${ej.enunciado}</div>
+        ${imagenHtml}
+    `;
 
         const inputArea = document.getElementById('input-area');
         if (ej.tipo === 'NUMERICO') {
@@ -96,7 +109,6 @@
         document.getElementById('feedback').innerHTML = '';
         document.getElementById('progressBar').style.width = `${(index / ejercicios.length) * 100}%`;
 
-        // Renderizar LaTeX después de actualizar el DOM
         setTimeout(() => renderizarLatex(), 50);
     }
 
