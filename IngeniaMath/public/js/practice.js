@@ -249,6 +249,17 @@ class SessionManager {
 
         if (!this.pnlFeedback) return;
 
+        if (this.modo === 'SIMULACRO') {
+            // En simulacro no mostramos feedback, avanzamos de inmediato.
+            if (this.currentIndex < this.ejercicios.length - 1) {
+                this.siguienteEjercicio();
+            } else {
+                if (this.elProgress) this.elProgress.style.width = `100%`;
+                document.getElementById('finishForm').submit();
+            }
+            return;
+        }
+
         this.pnlFeedback.classList.remove('d-none');
 
         if (payload.es_correcta) {

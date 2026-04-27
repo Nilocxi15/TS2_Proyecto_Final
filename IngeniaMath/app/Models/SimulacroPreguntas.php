@@ -19,6 +19,7 @@ class SimulacroPreguntas extends Model
     protected $fillable = [
         'simulacro_id',
         'ejercicio_id',
+        'respuesta',
         'es_correcta',
     ];
 

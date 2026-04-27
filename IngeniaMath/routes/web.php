@@ -66,7 +66,12 @@ Route::middleware('auth')->group(function () {
             // Rutas para la página de ruta de aprendizaje
             Route::get('/learning-route', fn() => view('estudiante.ruta-aprendizaje'))->name('learning-route');
             // Rutas para la página de simulacros de ejercicios
-            Route::get('/mock-exams', fn() => view('estudiante.simulacros'))->name('mock-exams');
+            Route::get('/mock-exams', [\App\Http\Controllers\Estudiante\SimulacroController::class, 'index'])->name('mock-exams');
+            Route::post('/mock-exams/start', [\App\Http\Controllers\Estudiante\SimulacroController::class, 'start'])->name('mock-exams.start');
+            Route::get('/mock-exams/{id}/session', [\App\Http\Controllers\Estudiante\SimulacroController::class, 'session'])->name('mock-exams.session');
+            Route::post('/mock-exams/{id}/answer', [\App\Http\Controllers\Estudiante\SimulacroController::class, 'saveAnswer'])->name('mock-exams.answer');
+            Route::post('/mock-exams/{id}/finish', [\App\Http\Controllers\Estudiante\SimulacroController::class, 'finish'])->name('mock-exams.finish');
+            Route::get('/mock-exams/{id}/results', [\App\Http\Controllers\Estudiante\SimulacroController::class, 'results'])->name('mock-exams.results');
             // Rutas para la página de flashcards
             Route::get('/flashcards', [FlashcardsController::class, 'index'])->name('flashcards');
             Route::get('/flashcards/subtema/{subtema}', [FlashcardsController::class, 'subtema'])->name('flashcards.subtema');
@@ -150,6 +155,12 @@ Route::middleware('auth')->group(function () {
                 Route::get('/{id}/edit', [UsuariosController::class, 'edit'])->name('edit');
                 Route::put('/{id}', [UsuariosController::class, 'update'])->name('update');
                 Route::delete('/{id}', [UsuariosController::class, 'destroy'])->name('destroy');
+            });
+
+            // Configuraciones Globales
+            Route::prefix('settings')->name('settings.')->group(function () {
+                Route::get('/', [\App\Http\Controllers\Admin\ConfiguracionController::class, 'index'])->name('index');
+                Route::put('/', [\App\Http\Controllers\Admin\ConfiguracionController::class, 'update'])->name('update');
             });
         });
 
