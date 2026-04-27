@@ -1,5 +1,6 @@
 @extends('layouts.app')
 
+{{-- Flujo Estudiante: galería de flashcards publicadas por módulo/subtema. --}}
 @section('title', 'Flashcards')
 
 @push('styles')
@@ -50,6 +51,7 @@
             </div>
 
             @forelse ($modulos as $modulo)
+                {{-- Sección por módulo con vista previa de tarjetas por subtema. --}}
                 <section class="module-section mt-5">
                     <div class="section-header">
                         <div>
@@ -123,6 +125,7 @@
     @push('scripts')
         <script>
             (function () {
+                // Voltea cada mini tarjeta para alternar pregunta/respuesta.
                 const toggles = document.querySelectorAll('[data-flashcard-toggle]');
 
                 toggles.forEach((toggle) => {

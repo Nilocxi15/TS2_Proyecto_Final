@@ -76,6 +76,12 @@
                 </a>
             </li>
 
+            <li>
+                <a href="{{ route('tutor.resources.flashcards.show') }}" class="nav-link">
+                    <i class="bi bi-book"></i> Recursos Educativos
+                </a>
+            </li>
+
         @endif
 
 
@@ -119,6 +125,12 @@
             <li>
                 <a href="{{ route('moderador.exercises.revisions') }}" class="nav-link">
                     <i class="fas fa-clipboard-list"></i> Revisar Ejercicios
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ route('moderador.resources.revisions') }}" class="nav-link">
+                    <i class="bi bi-book"></i> Revisar Recursos
                 </a>
             </li>
 

@@ -7,6 +7,9 @@ use App\Services\FlashcardsServices;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
+/**
+ * Flujo Estudiante: navegación de flashcards publicadas por módulo y subtema.
+ */
 class FlashcardsController extends Controller
 {
     public function __construct(
@@ -14,6 +17,9 @@ class FlashcardsController extends Controller
     ) {
     }
 
+    /**
+     * Galería de módulos con subtemas y flashcards en estado PUBLICADO.
+     */
     public function index(Request $request): View
     {
         return view('estudiante.flashcards-galery', [
@@ -24,6 +30,9 @@ class FlashcardsController extends Controller
         ]);
     }
 
+    /**
+     * Vista de detalle de un subtema con paginación de flashcards publicadas.
+     */
     public function subtema(Subtemas $subtema, Request $request): View
     {
         $perPage = (int) $request->input('per_page', 6);
