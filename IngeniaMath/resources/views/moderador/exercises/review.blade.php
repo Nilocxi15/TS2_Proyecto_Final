@@ -232,7 +232,7 @@
                             <div class="border-bottom pb-2 mb-2">
                                 <div class="d-flex justify-content-between align-items-start">
                                     <div>
-                                        <a href="/tutor/exercises/${duplicado.id}" target="_blank" class="fw-bold">
+                                        <a href="/exercises/${duplicado.id}" target="_blank" class="fw-bold">
                                             Ejercicio #${duplicado.id}
                                         </a>
                                         <p class="text-muted small mb-0 mt-1">${duplicado.enunciado.substring(0, 150)}...</p>

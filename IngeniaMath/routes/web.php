@@ -94,13 +94,13 @@ Route::middleware('auth')->group(function () {
                     Route::get('/', [EjercicioController::class, 'index'])->name('index');
                     Route::get('/create', [EjercicioController::class, 'create'])->name('create');
                     Route::post('/', [EjercicioController::class, 'store'])->name('store');
-                    Route::get('/{id}', [EjercicioController::class, 'show'])->name('show');
                     Route::get('/{id}/edit', [EjercicioController::class, 'edit'])->name('edit');
                     Route::put('/{id}', [EjercicioController::class, 'update'])->name('update');
                     Route::patch('/{id}/estado', [EjercicioController::class, 'cambiarEstado'])->name('cambiar-estado');
                     Route::delete('/{id}', [EjercicioController::class, 'destroy'])->name('destroy');
 
                 });
+
 
             /*
             |--------------------------------------------------------------------------
@@ -114,7 +114,6 @@ Route::middleware('auth')->group(function () {
                     
                 });
         });
-
 
     /*
     |--------------------------------------------------------------------------
@@ -166,6 +165,15 @@ Route::middleware('auth')->group(function () {
 
     /*
     |--------------------------------------------------------------------------
+    | RUTAS COMPARTIDAS (Tutor y Revisor)
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/exercises/{id}', [EjercicioController::class, 'show'])
+        ->middleware('role:' . RolEnum::TUTOR->value . ',' . RolEnum::REVISOR->value)
+        ->name('tutor.exercises.show');
+
+    /*
+    |--------------------------------------------------------------------------
     | Privada pero no depende de un Rol
     |--------------------------------------------------------------------------
     */
@@ -214,6 +222,7 @@ Route::middleware('auth')->group(function () {
             ->middleware('role:' . RolEnum::REVISOR->value)
             ->name('delete-answer');
     });
+    
     // logout
     // Rutas para la página de perfil
     Route::get('/profile', fn() => view('dashboards.perfil'))->name('profile');
