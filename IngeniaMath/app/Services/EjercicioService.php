@@ -47,8 +47,8 @@ class EjercicioService
             ->orderBy('respuestas_usuario.created_at', 'desc')
             ->limit(5)
             ->get();
-            
-        $dificultad = 'BASICO'; 
+
+        $dificultad = 'BASICO';
         if ($lastResponses->count() >= 3) {
             $correctos = $lastResponses->where('es_correcta', true)->count();
             if ($correctos >= 3) {
@@ -111,7 +111,7 @@ class EjercicioService
     {
         $coleccion = collect();
         $modulos = Modulos::all();
-        
+
         if ($modulos->isEmpty()) {
             return $coleccion;
         }
@@ -140,5 +140,56 @@ class EjercicioService
         }
 
         return $coleccion->shuffle();
+    }
+
+    /**
+     * Genera preguntas para diagnóstico inicial
+     * 5 por módulo:
+     * 2 básicas
+     * 2 intermedias
+     * 1 avanzada
+     */
+    public function getParaDiagnostico(): \Illuminate\Support\Collection
+    {
+        $coleccion = collect();
+
+        $modulos = Modulos::all();
+
+        if ($modulos->isEmpty()) return $coleccion;
+
+
+        foreach ($modulos as $modulo) {
+
+            // Básico
+            $basicos = Ejercicios::where('modulo_id', $modulo->id)
+                ->where('estado', 'PUBLICADO')
+                ->where('dificultad', 'BASICO')
+                ->inRandomOrder()
+                ->limit(1)
+                ->get();
+
+            // Intermedio
+            $intermedios = Ejercicios::where('modulo_id', $modulo->id)
+                ->where('estado', 'PUBLICADO')
+                ->where('dificultad', 'INTERMEDIO')
+                ->inRandomOrder()
+                ->limit(1)
+                ->get();
+
+            // Avanzado
+            $avanzados = Ejercicios::where('modulo_id', $modulo->id)
+                ->where('estado', 'PUBLICADO')
+                ->where('dificultad', 'AVANZADO')
+                ->inRandomOrder()
+                ->limit(1)
+                ->get();
+
+            $coleccion = $coleccion
+                ->merge($basicos)
+                ->merge($intermedios)
+                ->merge($avanzados);
+        }
+
+        return $coleccion->shuffle()->values();
     }
 }

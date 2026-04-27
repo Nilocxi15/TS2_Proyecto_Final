@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Diagnosticos;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -45,6 +46,14 @@ class LoginController extends Controller
         if ($usuario->tieneRol(RolEnum::REVISOR->value)) {
             return redirect()->route('moderador.dashboard');
         }
+
+        $yaTieneDiagnostico = Diagnosticos::where(
+            'usuario_id',
+            $usuario->id
+        )->exists();
+
+        if (!$yaTieneDiagnostico) return redirect()->route('student.diagnostic.index');
+
 
         return redirect()->route('student.dashboard');
     }

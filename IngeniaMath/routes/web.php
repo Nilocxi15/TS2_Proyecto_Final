@@ -3,6 +3,7 @@
 use App\Enums\RolEnum;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\BancoEjercicios\EjercicioController;
+use App\Http\Controllers\DiagnosticoUsuario\DiagnosticoController;
 use App\Http\Controllers\Foro\ForoController;
 use App\Http\Controllers\Foro\ModeracionForoController;
 use App\Http\Controllers\Foro\RespuestaForoController;
@@ -47,7 +48,19 @@ Route::middleware('auth')->group(function () {
                 ->name('dashboard');
 
             // Rutas para la página de diagnostico
-            Route::get('/diagnostic', fn() => view('estudiante.diagnostico'))->name('diagnostic');
+            Route::prefix('diagnostic')->name('diagnostic.')->group(function () {
+
+                Route::get('/', [DiagnosticoController::class,'index'])->name('index');
+
+                Route::post('/start', [DiagnosticoController::class,'start'])->name('start');
+
+                Route::get('/session/{id}', [DiagnosticoController::class,'session'])->name('session');
+
+                Route::post('/session/{id}/answer', [DiagnosticoController::class,'answer'])->name('answer');
+
+                Route::get('/summary/{id}', [DiagnosticoController::class,'summary'])->name('summary');
+
+            });
             // Rutas para la página de practica de ejercicios
             Route::get('/practice', [\App\Http\Controllers\Estudiante\PracticeController::class, 'index'])->name('practice');
             Route::post('/practice/start-free', [\App\Http\Controllers\Estudiante\PracticeController::class, 'startFree'])->name('practice.start-free');
@@ -105,13 +118,13 @@ Route::middleware('auth')->group(function () {
             /*
             |--------------------------------------------------------------------------
             | Recursos Educativos - Módulo 5
-            |--------------------------------------------------------------------------        
+            |--------------------------------------------------------------------------
             */
             Route::prefix('resources')
                 ->name('resources.')
                 ->group(function () {
 
-                    
+
                 });
         });
 
