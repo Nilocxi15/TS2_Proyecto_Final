@@ -167,7 +167,7 @@
                 '<div class="col-12"><label class="form-label">Descripción</label><textarea class="form-control" rows="3" name="descripcion"></textarea></div>',
                 '<div class="col-12 col-md-6"><label class="form-label">Módulo</label><select class="form-select" name="modulo_id" data-modal-module-select required>' + moduloOptions + '</select></div>',
                 '<div class="col-12 col-md-6"><label class="form-label">Subtema</label><select class="form-select" name="subtema_id" data-modal-subtema-select required>' + subtemaOptions + '</select></div>',
-                '<div class="col-12 col-md-6"><label class="form-label">Tipo (solo para URL)</label><select class="form-select" name="tipo">' + tipoOptions + '</select></div>',
+                '<div class="col-12 col-md-6"><label class="form-label">Tipo</label><select class="form-select" name="tipo">' + tipoOptions + '</select></div>',
                 '<div class="col-12 col-md-6"><label class="form-label">Origen del recurso</label><select class="form-select" name="fuente_tipo" data-source-type><option value="url">URL</option><option value="archivo">Archivo propio</option></select></div>',
                 '<div class="col-12" data-source-url><label class="form-label">URL</label><input class="form-control" type="url" name="url" maxlength="2000" placeholder="https://..." required></div>',
                 '<div class="col-12 d-none" data-source-file><label class="form-label">Archivo</label><input class="form-control" type="file" name="archivo" accept="image/*,video/*,application/pdf"><small class="text-muted">Puedes subir imagen, video o PDF.</small></div>',
