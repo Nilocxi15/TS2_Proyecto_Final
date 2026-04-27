@@ -4,6 +4,8 @@ use App\Enums\RolEnum;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\BancoEjercicios\EjercicioController;
 use App\Http\Controllers\DiagnosticoUsuario\DiagnosticoController;
+use App\Http\Controllers\DiagnosticoUsuario\PlanEstudioController;
+use App\Http\Controllers\DiagnosticoUsuario\RutaController;
 use App\Http\Controllers\Foro\ForoController;
 use App\Http\Controllers\Foro\ModeracionForoController;
 use App\Http\Controllers\Foro\RespuestaForoController;
@@ -71,8 +73,16 @@ Route::middleware('auth')->group(function () {
             // Rutas para la página de recursos educativos
             Route::get('/resources', [RecursosController::class, 'index'])->name('resources');
             // Rutas para la página de ruta de aprendizaje
-            Route::get('/learning-route', fn() => view('estudiante.ruta-aprendizaje'))->name('learning-route');
-            // Rutas para la página de simulacros de ejercicios
+            Route::get('/learning-route', [RutaController::class, 'index'])->name('learning-route');
+            Route::prefix('study-plan')->name('study-plan.')->group(function () {
+
+                Route::get('/', [PlanEstudioController::class,'index'])
+                    ->name('index');
+
+                Route::post('/save-hours', [PlanEstudioController::class,'saveHours'])
+                    ->name('save-hours');
+
+            });
             Route::get('/mock-exams', fn() => view('estudiante.simulacros'))->name('mock-exams');
             // Rutas para la página de perfil del estudiante
             Route::get('/profile', fn() => view('estudiante.perfil'))->name('profile');
